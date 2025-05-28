@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:supra_cart/features/auth/ui/login_view.dart';
+import 'package:supra_cart/features/splash/ui/splash_view.dart';
+
+import 'core/helper_function/on_generate_route.dart';
 
 void main() {
   runApp(const SupraCart());
@@ -31,7 +33,8 @@ class SupraCart extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const  LoginView(),
+      onGenerateRoute: onGenerateRoute,
+      initialRoute: SplashView.routeName,
     );
   }
 }

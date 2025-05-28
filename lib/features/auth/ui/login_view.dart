@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supra_cart/features/auth/ui/widgets/login_view_body.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
@@ -6,6 +7,13 @@ class LoginView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      body: SafeArea(
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+          child: LoginViewBody(),
+        ),
+      ),
+    );
   }
 }

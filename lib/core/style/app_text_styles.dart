@@ -34,6 +34,10 @@ abstract class textStyle{
     fontWeight:  FontWeight.w600,
     fontSize: 16,
   );
+  static const TextStyle semiBold18=TextStyle(
+    fontWeight:  FontWeight.w600,
+    fontSize: 18,
+  );
   static const TextStyle Bold28=TextStyle(
     fontWeight:  FontWeight.bold,
     fontSize: 28,

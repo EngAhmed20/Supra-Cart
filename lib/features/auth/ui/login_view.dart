@@ -10,7 +10,7 @@ class LoginView extends StatelessWidget {
     return Scaffold(
       body: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 10,vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 15,vertical: 15),
           child: LoginViewBody(),
         ),
       ),

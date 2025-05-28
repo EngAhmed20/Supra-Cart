@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supra_cart/features/auth/ui/forget_pass_view.dart';
 import 'package:supra_cart/features/auth/ui/login_view.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
@@ -8,6 +9,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
       return MaterialPageRoute(builder: (_) => const SplashView());
     case LoginView.routeName:
       return MaterialPageRoute(builder: (_) => const LoginView());
+    case ForgetPassView.routeName:
+      return MaterialPageRoute(builder: (_) => const ForgetPassView());
 
 
     default:

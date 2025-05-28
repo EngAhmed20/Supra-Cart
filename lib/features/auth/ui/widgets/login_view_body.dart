@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/widgets/custom_text_form.dart';
+import 'package:supra_cart/features/auth/ui/forget_pass_view.dart';
 
 import '../../../../core/style/app_text_styles.dart';
+import 'login_button.dart';
 
 class LoginViewBody extends StatefulWidget {
   const LoginViewBody({super.key});
@@ -23,15 +25,17 @@ class _LoginViewBodyState extends State<LoginViewBody> {
           style: textStyle.Bold24,
 
         ),
-        const SizedBox(height: 25,),
+        Spacer(flex: 1,),
         Card(
+          margin: EdgeInsets.zero,
           color: AppColors.kWhiteColor,
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(15),
+            borderRadius: BorderRadius.circular(16),
           ),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+            padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 30),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CustomTextFormField(hintText: 'Enter your email',
                   keyboardType: TextInputType.emailAddress,
@@ -42,7 +46,7 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 20),
+                const SizedBox(height: 25),
                 CustomTextFormField(
                   hintText: 'Enter your password',
                   isPassword: true,
@@ -58,13 +62,58 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     return null;
                   },
                 ),
-
+                const SizedBox(height: 15,),
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(context, ForgetPassView.routeName);
+                    },
+                    child: Text('Forgot Password?',
+                      style: textStyle.semiBold16.copyWith(
+                        color: AppColors.kPrimaryColor,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 30,),
+                LoginButton(loginText: 'Login',onTap: (){},),
+                const SizedBox(height: 25,),
+                LoginButton(loginText: 'Login With Google',onTap: (){},),
+                const SizedBox(height: 40,),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Don\'t have an account?',
+                        style: textStyle.semiBold18
+                    ),
+                    const SizedBox(width: 5,),
+                    InkWell(
+                      onTap: () {
+                        // Handle navigation to sign up
+                      },
+                      child: InkWell(
+                        child: Text('Sign Up',
+                          style: textStyle.semiBold18.copyWith(
+                            color: AppColors.kPrimaryColor,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ],
             ),
           ),
-        )
+        ),
+
+
+
+        Spacer(flex: 2,),
+
       ],
 
     );
   }
 }
+

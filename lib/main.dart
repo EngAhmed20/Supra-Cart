@@ -37,5 +37,6 @@ class SupraCart extends StatelessWidget {
       initialRoute: SplashView.routeName,
     );
   }
+
 }
 

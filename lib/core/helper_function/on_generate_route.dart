@@ -9,6 +9,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
     case LoginView.routeName:
       return MaterialPageRoute(builder: (_) => const LoginView());
 
+
     default:
       return MaterialPageRoute(builder: (_) => const Scaffold());
   }

@@ -12,7 +12,8 @@ class SplashViewBody extends StatefulWidget {
 
 class _SplashViewBodyState extends State<SplashViewBody> {
   @override
-  void initState() {executeNavigation();
+  void initState() {
+    executeNavigation();
     super.initState();
   }
   @override

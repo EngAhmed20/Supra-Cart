@@ -9,6 +9,7 @@ class SplashView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SplashViewBody(),
+
     );
   }
 }

@@ -3,6 +3,7 @@ import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/widgets/custom_text_form.dart';
 import 'package:supra_cart/features/auth/ui/forget_pass_view.dart';
 import 'package:supra_cart/features/auth/ui/sign_up_view.dart';
+import 'package:supra_cart/features/home/ui/main_home_view.dart';
 
 import '../../../../core/style/app_text_styles.dart';
 import 'login_button.dart';
@@ -79,7 +80,9 @@ class _LoginViewBodyState extends State<LoginViewBody> {
                     ),
                   ),
                   const SizedBox(height: 30,),
-                  LoginButton(loginText: 'Login',onTap: (){},),
+                  LoginButton(loginText: 'Login',onTap: (){
+                    Navigator.pushNamed(context, MainHomeView.routeName);
+                  },),
                   const SizedBox(height: 25,),
                   LoginButton(loginText: 'Login With Google',onTap: (){},),
                   const SizedBox(height: 40,),

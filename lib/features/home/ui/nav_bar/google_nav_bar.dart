@@ -12,6 +12,9 @@ class GoogleNavBar extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
       child: GNav(
+        onTabChange: (value){
+          print(value);
+        },
           rippleColor: AppColors.kPrimaryColor, // tab button ripple color when pressed
           hoverColor:AppColors.kPrimaryColor, // tab button hover color
           curve: Curves.easeOutExpo, // tab animation curves

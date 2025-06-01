@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
+
+import '../../logic/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 
 class GoogleNavBar extends StatelessWidget {
   const GoogleNavBar({
@@ -9,11 +12,13 @@ class GoogleNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final cubit = context.read<NavBarCubit>();
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),
       child: GNav(
         onTabChange: (value){
-          print(value);
+          cubit.changeIndex(value);
         },
           rippleColor: AppColors.kPrimaryColor, // tab button ripple color when pressed
           hoverColor:AppColors.kPrimaryColor, // tab button hover color

@@ -22,6 +22,7 @@ class SupraCart extends StatelessWidget {
       ),
       onGenerateRoute: onGenerateRoute,
       initialRoute: SplashView.routeName,
+      debugShowCheckedModeBanner: false,
     );
   }
 

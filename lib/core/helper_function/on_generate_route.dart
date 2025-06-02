@@ -16,7 +16,7 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
     case SignUpView.routeName:
       return MaterialPageRoute(builder: (_) => const SignUpView());
     case MainHomeView.routeName:
-      return MaterialPageRoute(builder: (_) => const MainHomeView());
+      return MaterialPageRoute(builder: (_) =>  MainHomeView());
 
 
     default:

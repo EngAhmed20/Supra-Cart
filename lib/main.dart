@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
@@ -14,15 +15,21 @@ class SupraCart extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Supra Market',
-      theme: ThemeData(
-        scaffoldBackgroundColor: AppColors.kScaffoldColor,
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-      ),
-      onGenerateRoute: onGenerateRoute,
-      initialRoute: SplashView.routeName,
-      debugShowCheckedModeBanner: false,
+    return ScreenUtilInit(
+      designSize: const Size(375, 812),
+      minTextAdapt: true,
+      builder:(_,child){
+       return MaterialApp(
+          title: 'Supra Market',
+          theme: ThemeData(
+            scaffoldBackgroundColor: AppColors.kScaffoldColor,
+            colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          ),
+          onGenerateRoute: onGenerateRoute,
+          initialRoute: SplashView.routeName,
+          debugShowCheckedModeBanner: false,
+        );
+      }
     );
   }
 

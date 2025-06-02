@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/features/favorite/ui/favorite_view.dart';
 import 'package:supra_cart/features/home/ui/home_view.dart';
 import 'package:supra_cart/features/profile/ui/profile_view.dart';
@@ -27,7 +28,7 @@ class MainHomeView extends StatelessWidget {
           return Scaffold(
             body: SafeArea(
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+                padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
                 child: AnimatedSwitcher(
                   duration: const Duration(milliseconds: 300), // ⏱ مدة الانتقال
                   transitionBuilder: (Widget child, Animation<double> animation) {

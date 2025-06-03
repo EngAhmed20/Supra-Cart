@@ -21,7 +21,7 @@ class CustomTextButton extends StatelessWidget {
           AppColors.kPrimaryColor,
         ),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
-          const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
 
         ),
         shape: MaterialStateProperty.all<RoundedRectangleBorder>(

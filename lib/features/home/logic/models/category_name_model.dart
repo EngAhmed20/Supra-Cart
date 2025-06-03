@@ -14,4 +14,5 @@ List<CategoryNameModel> categoryNames = [
   CategoryNameModel(name: 'Collections', icon: Icons.collections),
   CategoryNameModel(name: 'Book', icon: Icons.book),
   CategoryNameModel(name: 'Game', icon: Icons.games_outlined),
+  CategoryNameModel(name: 'Bikes', icon: Icons.bike_scooter),
 ];

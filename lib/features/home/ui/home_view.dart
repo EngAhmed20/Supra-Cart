@@ -44,7 +44,6 @@ class HomeView extends StatelessWidget {
         ),
         /// product card
         Card(
-
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(10.h),
           ),
@@ -89,10 +88,7 @@ class HomeView extends StatelessWidget {
 
           ),
         ),
-
-
-
-
+        
       ],
     );
   }

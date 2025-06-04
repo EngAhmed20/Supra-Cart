@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
@@ -6,6 +7,7 @@ import 'package:supra_cart/core/widgets/custom_search_filed.dart';
 import 'package:supra_cart/features/auth/ui/widgets/custom_text_button.dart';
 import 'package:supra_cart/features/home/ui/widgets/popular_category_item.dart';
 
+import '../../../core/widgets/loadibg_ink_drop.dart';
 import '../../../generated/assets.dart';
 import '../logic/models/category_name_model.dart';
 
@@ -53,8 +55,13 @@ class HomeView extends StatelessWidget {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(10.h),
-                    child: Image(image: NetworkImage('https://img.freepik.com/free-photo/3d-rendering-cartoon-shopping-cart_23-2151680638.jpg?ga=GA1.1.220289254.1670056954&semt=ais_hybrid&w=740')
-                    ,),
+                    child:CachedNetworkImage(
+                      imageUrl: "https://img.freepik.com/free-photo/3d-rendering-cartoon-shopping-cart_23-2151680638.jpg?ga=GA1.1.220289254.1670056954&semt=ais_hybrid&w=740",
+                      placeholder: (context, url) => Container(
+                          width: double.infinity,
+                          height: 150.h,
+                          child: Center(child: LoadingInkDrop())),
+                      errorWidget: (context, url, error) => Icon(Icons.error),),
                   ),
                   SizedBox(height: 10.h,),
                   Padding(
@@ -92,5 +99,6 @@ class HomeView extends StatelessWidget {
       ],
     );
   }
+
 
 }

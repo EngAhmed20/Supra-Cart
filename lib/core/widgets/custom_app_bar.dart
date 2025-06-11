@@ -5,7 +5,7 @@ import '../style/app_text_styles.dart';
 
 AppBar customAppBar(BuildContext context,{required String title}) {
   return AppBar(
-    title:  Text(title,style: textStyle.Bold26.copyWith(color: AppColors.kWhiteColor),),
+    title:  Text(title,style: textStyle.Bold23.copyWith(color: AppColors.kWhiteColor),),
     centerTitle: true,
     backgroundColor: AppColors.kPrimaryColor,
     leading: IconButton(

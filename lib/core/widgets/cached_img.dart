@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CachedImg extends StatelessWidget {
   const CachedImg({
     super.key, required this.imgUrl, required this.placeHolder,this.errWidget
@@ -12,6 +13,8 @@ class CachedImg extends StatelessWidget {
   Widget build(BuildContext context) {
     return CachedNetworkImage(
       imageUrl: imgUrl,
+      height: 250.h,
+      fit: BoxFit.cover,
       placeholder: (context, url) => placeHolder,
       errorWidget: (context, url, error) => errWidget??Icon(Icons.error),);
   }

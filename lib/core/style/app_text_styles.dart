@@ -58,6 +58,10 @@ abstract class textStyle{
     fontWeight:  FontWeight.normal,
     fontSize: 16,
   );
+  static const TextStyle regular18=TextStyle(
+    fontWeight:  FontWeight.normal,
+    fontSize: 18,
+  );
   static const TextStyle regular11=TextStyle(
     fontWeight:  FontWeight.normal,
     fontSize: 11,

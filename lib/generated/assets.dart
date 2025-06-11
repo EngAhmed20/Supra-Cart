@@ -2,7 +2,9 @@
 class Assets {
   Assets._();
 
+  static const String assetsImagesNoOrdersYet = 'assets/images/no_orders_yet.png';
   static const String imagesBuy = 'assets/images/buy.jpg';
+  static const String imagesNoOrdersYet = 'assets/images/no_orders_yet.png';
   static const String imagesSupraLogo = 'assets/images/supra_logo.png';
 
 }

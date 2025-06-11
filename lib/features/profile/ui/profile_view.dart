@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
 import 'package:supra_cart/features/profile/ui/widgets/custom_profile_button.dart';
+import 'package:supra_cart/features/profile/ui/widgets/edit_name_view.dart';
 
 class ProfileView extends StatelessWidget {
   const ProfileView({super.key});
@@ -20,7 +21,9 @@ class ProfileView extends StatelessWidget {
           SizedBox(height: 5.h),
           Text('Ahmed@gmail.com',style: textStyle.semiBold16,),
           SizedBox(height: 20.h),
-          CustomProfileButton(title: 'Edit Name',icon: Icons.person,onTap: (){},),
+          CustomProfileButton(title: 'Edit Name',icon: Icons.person,onTap: (){
+            Navigator.pushNamed(context, EditNameView.routeName);
+          },),
           SizedBox(height: 10.h),
           CustomProfileButton(title: 'My Orders',icon: Icons.shopping_cart,onTap: (){},),
           SizedBox(height: 10.h,),

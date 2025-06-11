@@ -5,6 +5,8 @@ import 'package:supra_cart/features/auth/ui/sign_up_view.dart';
 import 'package:supra_cart/features/home/ui/main_home_view.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
+import '../../features/profile/ui/widgets/edit_name_view.dart';
+
 Route<dynamic> onGenerateRoute(RouteSettings settings){
   switch(settings.name){
     case SplashView.routeName:
@@ -17,6 +19,9 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
       return MaterialPageRoute(builder: (_) => const SignUpView());
     case MainHomeView.routeName:
       return MaterialPageRoute(builder: (_) =>  MainHomeView());
+    case EditNameView.routeName:
+      return MaterialPageRoute(builder: (_) =>  EditNameView());
+
 
 
     default:

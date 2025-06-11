@@ -6,7 +6,6 @@ class CommentsWidget extends StatelessWidget {
   const CommentsWidget({super.key, required this.userName, required this.userComment});
   final String userName;
   final String userComment;
-
   @override
   Widget build(BuildContext context) {
     return IntrinsicHeight(

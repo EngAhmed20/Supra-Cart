@@ -13,7 +13,6 @@ import '../../../core/widgets/product_img.dart';
 class ProductDetailsView extends StatelessWidget {
   const ProductDetailsView({super.key});
   static const String routeName = '/productDetails';
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

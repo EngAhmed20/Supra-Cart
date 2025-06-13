@@ -1,11 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supra_cart/core/secret_data.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
 import 'core/helper_function/on_generate_route.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Supabase.initialize(
+    url: SecretData.supabaseUrl,
+    anonKey: SecretData.supabaseAnonKey,
+  );
   runApp(const SupraCart());
 }
 

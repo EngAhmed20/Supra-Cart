@@ -11,7 +11,8 @@
 .svn/
 .swiftpm/
 migrate_working_dir/
-
+# Sensitive files
+lib/core/secret_data.dart
 # IntelliJ related
 *.iml
 *.ipr

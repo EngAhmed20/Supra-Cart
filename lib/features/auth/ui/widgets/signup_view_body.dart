@@ -20,7 +20,7 @@ class _SignupViewBodyState extends State<SignupViewBody> {
       child: Column(
         children: [
           const SizedBox(height: 30,),
-          const Text(
+           Text(
             'Welcome to Supra Cart',
             style: textStyle.Bold24,
 

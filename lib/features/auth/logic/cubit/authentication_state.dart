@@ -4,6 +4,10 @@ part of 'authentication_cubit.dart';
 abstract class AuthenticationState {}
 
 class AuthenticationInitial extends AuthenticationState {}
+class AuthenticationDisposed extends AuthenticationState {}
+class AuthenticationPasswordVisibilityChanged extends AuthenticationState {}
+class AuthenticationLoginValidationError extends AuthenticationState {}
+class AuthenticationRegisterValidationError extends AuthenticationState {}
 class AuthenticationLoading extends AuthenticationState {}
 class AuthenticationLoginLoading extends AuthenticationState {}
 class AuthenticationLoginSuccess extends AuthenticationState {

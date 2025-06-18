@@ -4,6 +4,7 @@ import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
 import 'package:supra_cart/features/profile/ui/widgets/custom_profile_button.dart';
 import 'package:supra_cart/features/profile/ui/widgets/edit_name_view.dart';
+import 'package:supra_cart/features/profile/ui/widgets/logout_widget.dart';
 import 'package:supra_cart/features/profile/ui/widgets/my_orders_view.dart';
 
 class ProfileView extends StatelessWidget {
@@ -30,11 +31,12 @@ class ProfileView extends StatelessWidget {
             Navigator.pushNamed(context, MyOrdersView.routeName);
           },),
           SizedBox(height: 10.h,),
-          CustomProfileButton(title: 'Logout',icon: Icons.logout,onTap: (){},),
+          LogoutWidget(),
 
         ],
       ),
     );
   }
 }
+
 

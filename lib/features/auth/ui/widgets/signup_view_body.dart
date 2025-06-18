@@ -142,7 +142,7 @@ class SignupViewBody extends StatelessWidget {
                 msg: "Account created successfully.",
                 isError: false,
               );
-              Navigator.pushReplacementNamed(context, MainHomeView.routeName);
+              Navigator.pushNamedAndRemoveUntil(context, MainHomeView.routeName, (route) => false);
             } else if (state is AuthenticationRegisterFailure) {
               customSnackBar(context: context, msg: state.errorMessage);
             } else if (state is AuthenticationGoogleSignInFailure) {

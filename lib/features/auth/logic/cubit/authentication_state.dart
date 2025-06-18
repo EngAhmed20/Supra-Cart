@@ -34,3 +34,10 @@ class AuthenticationGoogleSignInFailure extends AuthenticationState {
 
   AuthenticationGoogleSignInFailure(this.errorMessage);
 }
+class AuthenticationLogoutLoading extends AuthenticationState {}
+class AuthenticationLogoutSuccess extends AuthenticationState {}
+class AuthenticationLogoutFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationLogoutFailure(this.errorMessage);
+}

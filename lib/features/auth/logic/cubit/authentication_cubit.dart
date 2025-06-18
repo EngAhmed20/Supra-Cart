@@ -156,5 +156,17 @@ Future <void> registerUser({required String name,required String email,required 
       emit(AuthenticationRegisterValidationError());
     }
   }
+  /// logout
+Future<void>logout()async{
+    try{
+      emit(AuthenticationLogoutLoading());
+      await client.auth.signOut();
+      emit(AuthenticationLogoutSuccess());
+
+    }catch(e){
+      emit(AuthenticationLogoutFailure(e.toString()));
+
+    }
+}
 
 }

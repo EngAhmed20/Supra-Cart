@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supra_cart/bloc_observer.dart';
+import 'package:supra_cart/core/helper_function/get_it_services.dart';
 import 'package:supra_cart/core/secret_data.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/features/auth/logic/cubit/authentication_cubit.dart';
@@ -17,6 +18,7 @@ Future<void> main() async {
     anonKey: SecretData.supabaseAnonKey,
   );
   Bloc.observer=blocObserver();
+  ServicesLoacator().init();
   runApp(const SupraCart());
 }
 
@@ -31,7 +33,7 @@ class SupraCart extends StatelessWidget {
       minTextAdapt: true,
       builder:(_,child){
        return BlocProvider(
-         create: (context)=>AuthenticationCubit(),
+         create: (context)=>AuthenticationCubit(getIt.get<SupabaseClient>()),
          child: MaterialApp(
             title: 'Supra Market',
             theme: ThemeData(

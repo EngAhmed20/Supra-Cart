@@ -1,5 +1,6 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 part 'authentication_state.dart';
@@ -89,6 +90,44 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       emit(AuthenticationLoginValidationError());
     }
   }
+  /// login with google
+  GoogleSignInAccount ?googleUser;
+  Future<AuthResponse> googleSignIn() async {
+    emit(AuthenticationGoogleSignInLoading());
+    const webClientId = '98169094910-hgqhr09etdjahfnp31ujqnsgpvkf9a9u.apps.googleusercontent.com';
+
+
+
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+      serverClientId: webClientId,
+    );
+    googleUser = await googleSignIn.signIn();
+
+    if(googleUser==null){
+      return AuthResponse();
+    }
+    final googleAuth = await googleUser!.authentication;
+    final accessToken = googleAuth.accessToken;
+    final idToken = googleAuth.idToken;
+
+    if (accessToken == null) {
+      emit(AuthenticationGoogleSignInFailure('No Access Token found.'));
+      return AuthResponse();
+    }
+    if (idToken == null) {
+      emit(AuthenticationGoogleSignInFailure('No ID Token found.'));
+      return AuthResponse();
+    }
+
+    AuthResponse response= await client.auth.signInWithIdToken(
+      provider: OAuthProvider.google,
+      idToken: idToken,
+      accessToken: accessToken,
+    );
+    emit(AuthenticationGoogleSignInSuccess());
+    return response;
+  }
+
   ///////////////////////////////////////////////////////register
 /// register function
 Future <void> registerUser({required String name,required String email,required String password})async {

@@ -27,3 +27,10 @@ class AuthenticationRegisterFailure extends AuthenticationState {
 
   AuthenticationRegisterFailure(this.errorMessage);
 }
+class AuthenticationGoogleSignInLoading extends AuthenticationState {}
+class AuthenticationGoogleSignInSuccess extends AuthenticationState {}
+class AuthenticationGoogleSignInFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationGoogleSignInFailure(this.errorMessage);
+}

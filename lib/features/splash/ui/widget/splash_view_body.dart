@@ -32,7 +32,7 @@ class _SplashViewBodyState extends State<SplashViewBody> {
   }
   void executeNavigation() {
     Future.delayed(const Duration(seconds: 3), () {
-      getIt.get<SupabaseClient>().auth.currentUser!=null
+     getIt.get<SupabaseClient>().auth.currentUser!=null
           ? Navigator.pushReplacementNamed(context, MainHomeView.routeName)
           :
       Navigator.pushReplacementNamed(context, LoginView.routeName);

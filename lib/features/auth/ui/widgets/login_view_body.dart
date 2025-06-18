@@ -21,7 +21,7 @@ class LoginViewBody extends StatelessWidget {
     return BlocConsumer<AuthenticationCubit, AuthenticationState>(
       builder: (context, state) {
         AuthenticationCubit cubit = context.read<AuthenticationCubit>();
-        return state is AuthenticationLoginLoading
+        return state is AuthenticationLoginLoading ||state is AuthenticationGoogleSignInLoading
             ? Loading_body(context)
             : SingleChildScrollView(
               child: Form(
@@ -95,7 +95,9 @@ class LoginViewBody extends StatelessWidget {
                             const SizedBox(height: 25),
                             LoginButton(
                               loginText: 'Login With Google',
-                              onTap: () {},
+                              onTap: () {
+                                cubit.googleSignIn();
+                              },
                             ),
                             const SizedBox(height: 40),
                             Row(
@@ -136,17 +138,21 @@ class LoginViewBody extends StatelessWidget {
             );
       },
       listener: (context, state) {
-        if (state is AuthenticationLoginSuccess) {
-          customSnackBar(
-            context: context,
-            msg: "Logged in successfully.",
-            isError: false,
-          );
-          Navigator.pushReplacementNamed(context, MainHomeView.routeName);
-        } else if (state is AuthenticationLoginFailure) {
-          customSnackBar(context: context, msg: state.errorMessage);
-        }
-      },
+          if (state is AuthenticationLoginSuccess ||
+              state is AuthenticationGoogleSignInSuccess) {
+            customSnackBar(
+              context: context,
+              msg: "Logged in successfully.",
+              isError: false,
+            );
+            Navigator.pushReplacementNamed(context, MainHomeView.routeName);
+          } else if (state is AuthenticationLoginFailure) {
+            customSnackBar(context: context, msg: state.errorMessage);
+          } else if (state is AuthenticationGoogleSignInFailure) {
+            customSnackBar(context: context, msg: state.errorMessage);
+          }
+
+        },
     );
   }
 

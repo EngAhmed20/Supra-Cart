@@ -56,3 +56,22 @@ class AuthenticationAddUserDataFailure extends AuthenticationState {
 
   AuthenticationAddUserDataFailure(this.errorMessage);
 }
+class  AuthenticationGetUserDataLoading extends AuthenticationState {}
+class AuthenticationGetUserDataSuccess extends AuthenticationState {
+
+}
+class AuthenticationGetUserDataFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationGetUserDataFailure(this.errorMessage);
+}
+class AuthenticationUserDataLoaded extends AuthenticationState {
+  final UserModel user;
+
+  AuthenticationUserDataLoaded(this.user);
+}
+class AuthenticationUserDataNotFound extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationUserDataNotFound(this.errorMessage);
+}

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supra_cart/bloc_observer.dart';
 import 'package:supra_cart/core/helper_function/get_it_services.dart';
@@ -33,7 +34,7 @@ class SupraCart extends StatelessWidget {
       minTextAdapt: true,
       builder:(_,child){
        return BlocProvider(
-         create: (context)=>AuthenticationCubit(getIt.get<SupabaseClient>()),
+         create: (context)=>AuthenticationCubit(getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..getUserDataFromPrefs(),
          child: MaterialApp(
             title: 'Supra Market',
             theme: ThemeData(

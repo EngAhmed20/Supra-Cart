@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:meta/meta.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supra_cart/core/utilis/constants.dart';
 part 'authentication_state.dart';
 
 class AuthenticationCubit extends Cubit<AuthenticationState> {
@@ -72,6 +73,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         email: email,
         password: password,
       );
+      clearTextFiled();
       emit(AuthenticationLoginSuccess());
 
     } on AuthException catch(e){
@@ -90,6 +92,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
         email: loginEmailController.text.trim(),
         password: loginPasswordController.text.trim(),
       );
+
     } else {
       autovalidateMode = AutovalidateMode.always;
       emit(AuthenticationLoginValidationError());
@@ -129,6 +132,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       idToken: idToken,
       accessToken: accessToken,
     );
+    await addUserData(name: googleUser!.displayName!, email: googleUser!.email);
     emit(AuthenticationGoogleSignInSuccess());
     return response;
   }
@@ -139,7 +143,15 @@ Future <void> registerUser({required String name,required String email,required 
     try{
       emit(AuthenticationRegisterLoading());
       await client.auth.signUp(password: password,email: email);
+     try{
+      await addUserData(name: name, email: email);
+      clearTextFiled();
       emit(AuthenticationRegisterSuccess());
+     }catch(e){
+      await logout();
+       emit(AuthenticationRegisterFailure("Signed up but failed to save user data. Please try again."));
+
+     }
 
     }on AuthException catch(e){
       emit(AuthenticationRegisterFailure(e.message));}
@@ -156,6 +168,9 @@ Future <void> registerUser({required String name,required String email,required 
         email: registerEmailController.text.trim(),
         password: registerPasswordController.text.trim(),
       );
+      signUpAutovalidateMode = AutovalidateMode.disabled;
+
+
     } else {
       signUpAutovalidateMode = AutovalidateMode.always;
       emit(AuthenticationRegisterValidationError());
@@ -195,6 +210,32 @@ Future<void>logout()async{
 
     }
 }
+////////////////////// add user data
+Future<void>addUserData({required String name,required String email})async {
+    emit(AuthenticationAddUserDataLoading());
+    try{
+      await client.from(userTable).insert({
+        'id':client.auth.currentUser!.id,
+        'name': name,
+        'email': email,
+        'created_at': DateTime.now().toIso8601String(),
+      });
+      emit(AuthenticationAddUserDataSuccess());
+    }catch(e){
+      emit(AuthenticationAddUserDataFailure(e.toString()));
+      rethrow;
+    }
+  }
+  void clearTextFiled(){
+    loginEmailController.clear();
+    loginPasswordController.clear();
+    registerNameController.clear();
+    registerEmailController.clear();
+    registerPasswordController.clear();
+    registerConfirmPasswordController.clear();
+    resetPassEmailController.clear();
 
+  }
 
 }
+

@@ -49,3 +49,10 @@ class AuthenticationPasswordResetFailure extends AuthenticationState {
   AuthenticationPasswordResetFailure(this.errorMessage);
 }
 class AuthenticationPasswordResetValidationError extends AuthenticationState {}
+class AuthenticationAddUserDataLoading extends AuthenticationState {}
+class AuthenticationAddUserDataSuccess extends AuthenticationState {}
+class AuthenticationAddUserDataFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationAddUserDataFailure(this.errorMessage);
+}

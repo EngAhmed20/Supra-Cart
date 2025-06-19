@@ -132,7 +132,15 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       idToken: idToken,
       accessToken: accessToken,
     );
-    await addUserData(name: googleUser!.displayName!, email: googleUser!.email);
+    //check if user exists in the database
+    final userId=client.auth.currentUser!.id;
+    final userExists = await isUserAlreadyExists(userId);
+    if(!userExists){
+      // If user does not exist, add user data
+      await addUserData(name: googleUser!.displayName!, email: googleUser!.email);
+      emit(AuthenticationGoogleSignInSuccess());
+      return response;
+    }
     emit(AuthenticationGoogleSignInSuccess());
     return response;
   }
@@ -236,6 +244,14 @@ Future<void>addUserData({required String name,required String email})async {
     resetPassEmailController.clear();
 
   }
+  Future<bool> isUserAlreadyExists(String userId) async {
+    try{
+      await client.from(userTable).select().eq('id', userId).maybeSingle();
+      return true;
+    }catch(e){
+      return false;
+    }
+  }
 
-}
+  }
 

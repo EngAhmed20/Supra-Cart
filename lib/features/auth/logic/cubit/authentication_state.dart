@@ -41,3 +41,11 @@ class AuthenticationLogoutFailure extends AuthenticationState {
 
   AuthenticationLogoutFailure(this.errorMessage);
 }
+class AuthenticationPasswordResetLoading extends AuthenticationState {}
+class AuthenticationPasswordResetSuccess extends AuthenticationState {}
+class AuthenticationPasswordResetFailure extends AuthenticationState {
+  final String errorMessage;
+
+  AuthenticationPasswordResetFailure(this.errorMessage);
+}
+class AuthenticationPasswordResetValidationError extends AuthenticationState {}

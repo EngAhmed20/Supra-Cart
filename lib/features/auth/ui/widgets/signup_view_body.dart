@@ -21,12 +21,12 @@ class SignupViewBody extends StatelessWidget {
         builder:(context,state){
           var cubit=context.read<AuthenticationCubit>();
           return state is AuthenticationRegisterLoading || state is AuthenticationGoogleSignInLoading
-              ? Loading_body(context)
+              ? Scaffold(body: Loading_body(context))
               :
             SingleChildScrollView(
             child: Form(
               key: cubit.registerFormKey,
-              autovalidateMode: cubit.autovalidateMode,
+              autovalidateMode: cubit.signUpAutovalidateMode,
               child: Column(
                 children: [
                   const SizedBox(height: 30,),

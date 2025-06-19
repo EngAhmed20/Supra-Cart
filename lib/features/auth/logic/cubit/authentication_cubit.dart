@@ -19,7 +19,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   late TextEditingController registerPasswordController;
   late TextEditingController registerConfirmPasswordController;
   late GlobalKey<FormState>registerFormKey;
- late AutovalidateMode autovalidateMode;
+ late AutovalidateMode autovalidateMode,signUpAutovalidateMode,resetPassAutovalidateMode;
+  late GlobalKey<FormState>resetPassFormKey;
+  late TextEditingController resetPassEmailController;
+
   init(){
     hidePass = true;
     hideConfirmPass = true;
@@ -32,6 +35,10 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     registerPasswordController = TextEditingController();
     registerConfirmPasswordController = TextEditingController();
     autovalidateMode = AutovalidateMode.disabled;
+    resetPassFormKey = GlobalKey<FormState>();
+    resetPassEmailController = TextEditingController();
+    signUpAutovalidateMode = AutovalidateMode.disabled;
+    resetPassAutovalidateMode = AutovalidateMode.disabled;
     emit(AuthenticationInitial());
 
   }
@@ -42,8 +49,6 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
     registerEmailController.dispose();
     registerPasswordController.dispose();
     registerConfirmPasswordController.dispose();
-    loginFormKey.currentState?.dispose();
-    registerFormKey.currentState?.dispose();
     hidePass = true;
     hideConfirmPass = true;
 
@@ -152,8 +157,30 @@ Future <void> registerUser({required String name,required String email,required 
         password: registerPasswordController.text.trim(),
       );
     } else {
-      autovalidateMode = AutovalidateMode.always;
+      signUpAutovalidateMode = AutovalidateMode.always;
       emit(AuthenticationRegisterValidationError());
+    }
+  }
+  /// reset pass
+  Future<void>resetPassword({required String email})async {
+    emit(AuthenticationPasswordResetLoading());
+    try {
+      await client.auth.resend(type: OtpType.signup,
+      email: email
+      );
+      emit(AuthenticationPasswordResetSuccess());
+    }catch(e) {
+      emit(AuthenticationPasswordResetFailure(e.toString()));
+    }
+  }
+  resetPasswordButtonPressed() {
+    if (resetPassFormKey.currentState!.validate()) {
+      resetPassword(
+        email: resetPassEmailController.text.trim(),
+      );
+    } else {
+      resetPassAutovalidateMode = AutovalidateMode.always;
+      emit(AuthenticationPasswordResetValidationError());
     }
   }
   /// logout
@@ -168,5 +195,6 @@ Future<void>logout()async{
 
     }
 }
+
 
 }

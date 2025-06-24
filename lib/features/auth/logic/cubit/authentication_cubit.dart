@@ -281,6 +281,7 @@ UserModel ? userModel;
 
       if (response != null) {
         userModel = UserModel.fromJson(response);
+
         await saveUserDataToPrefs(userModel!);
         log('User data retrieved: ${userModel!.toJson()}');
         emit(AuthenticationGetUserDataSuccess());
@@ -307,6 +308,8 @@ Future<void>saveUserDataToPrefs(UserModel model)async{
     if (prefs != null) {
       final userData=jsonDecode(prefs);
       userSavedDataModel= UserModel.fromJson(userData);
+      await sharedPreferences.setString(userId, userSavedDataModel.id!);
+      print('current user id: ${sharedPreferences.getString(userId)}');
       emit(AuthenticationUserDataLoaded(userSavedDataModel));
       return;
     }

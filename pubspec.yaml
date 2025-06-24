@@ -46,6 +46,7 @@ dependencies:
   shared_preferences: ^2.5.3
   dio: ^5.8.0+1
   dartz: ^0.10.1
+  skeletonizer: ^1.4.3
 
 
 

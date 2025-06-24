@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:supra_cart/core/helper_function/base_api_services.dart';
+import 'package:supra_cart/core/helper_function/get_it_services.dart';
+import 'package:supra_cart/core/repo/product_repo.dart';
 import 'package:supra_cart/features/favorite/ui/favorite_view.dart';
+import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 import 'package:supra_cart/features/home/ui/home_view.dart';
 import 'package:supra_cart/features/profile/ui/profile_view.dart';
 import 'package:supra_cart/features/store/ui/store_view.dart';
-import '../logic/cubit/nav_bar_cubit/nav_bar_cubit.dart';
 import 'nav_bar/google_nav_bar.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -21,10 +24,10 @@ class MainHomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => NavBarCubit(),
-      child: BlocBuilder<NavBarCubit, NavBarState>(
+      create: (context) => HomeCubit(getIt.get<HomeProductRepo>())..getHomeProducts(),
+      child: BlocBuilder<HomeCubit, HomeState>(
         builder: (context, state) {
-          final cubit = context.read<NavBarCubit>();
+          final cubit = context.read<HomeCubit>();
           return Scaffold(
             body: SafeArea(
               child: Padding(

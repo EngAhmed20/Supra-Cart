@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
-
-import '../../logic/cubit/nav_bar_cubit/nav_bar_cubit.dart';
+import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 
 class GoogleNavBar extends StatelessWidget {
   const GoogleNavBar({
@@ -12,7 +11,7 @@ class GoogleNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = context.read<NavBarCubit>();
+    final cubit = context.read<HomeCubit>();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10,horizontal: 15),

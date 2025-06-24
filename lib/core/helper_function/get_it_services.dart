@@ -5,6 +5,8 @@ import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supra_cart/core/helper_function/base_api_services.dart';
+import 'package:supra_cart/core/repo/product_repo.dart';
+import 'package:supra_cart/core/repo/product_repo_impl.dart';
 
 import '../secret_data.dart';
 import '../utilis/constants.dart';
@@ -27,6 +29,7 @@ class ServicesLoacator {
     ));
     // API Service
     getIt.registerLazySingleton<BaseApiServices>(() => ApiServices(dio: getIt<Dio>()));
+    getIt.registerLazySingleton<HomeProductRepo>(()=>HomeProductRepoImpl(apiServices: getIt.get<BaseApiServices>()));
 
   }
 }

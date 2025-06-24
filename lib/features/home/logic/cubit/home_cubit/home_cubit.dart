@@ -1,11 +1,9 @@
 import 'package:bloc/bloc.dart';
-import 'package:dartz/dartz.dart';
 import 'package:meta/meta.dart';
-import 'package:supra_cart/core/helper_function/base_api_services.dart';
 import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
 
-import '../../../../../core/utilis/constants.dart';
+import '../../../../../core/models/product_rate_model.dart';
 
 part 'home_state.dart';
 
@@ -34,4 +32,22 @@ class HomeCubit extends Cubit<HomeState> {
 
 
   }
+  /// get product rate
+  List <ProductRateModel> productRateList = [];
+  List<ProductRateModel>rates=[];
+  int avgRate=0;
+Future<void>getProductRate({required String productId})async{
+  emit(GetProductRateLoading());
+  final response = await homeRepo.getProductRate(productId: productId);
+  response.fold(
+    (failure) => emit(GetProductRateFailure(failure.message)),
+    (successResponse) {
+      productRateList.clear();
+      for(var rate in successResponse){
+        productRateList.add(rate);
+      }
+      emit(GetProductRateSuccess());
+    },
+  );
+}
 }

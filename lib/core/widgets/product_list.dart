@@ -3,10 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
-import 'package:supra_cart/core/widgets/loadibg_ink_drop.dart';
 import 'package:supra_cart/core/widgets/product_card.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
-
+import '../../features/product_details/ui/product_details_view.dart';
 import '../helper_function/dummy_product_list.dart';
 import '../style/app_colors.dart';
 
@@ -37,7 +36,11 @@ class ProductList extends StatelessWidget {
       return ListView.separated(
           shrinkWrap:shrinkWrap?? true,
           physics: physics??NeverScrollableScrollPhysics(),
-          itemBuilder: (context,index)=> ProductCard(productModel:cubit.homeProducts[index], buyNowButton: () {  }, favButton: () {  },),
+          itemBuilder: (context,index)=> ProductCard(productModel:cubit.homeProducts[index], buyNowButton: () {
+          }, favButton: () {  },onTap: (){
+            cubit.getProductRate(productId: cubit.homeProducts[index].id);
+            Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: cubit.homeProducts[index]);
+          },),
           separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: cubit.homeProducts.length);
     }, listener: (context,state){
 

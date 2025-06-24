@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:supra_cart/core/helper_function/base_api_services.dart';
 import 'package:supra_cart/core/helper_function/failure.dart';
 import 'package:supra_cart/core/models/product_model.dart';
+import 'package:supra_cart/core/models/product_rate_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
 import 'package:supra_cart/core/utilis/constants.dart';
 
@@ -19,6 +20,17 @@ class HomeProductRepoImpl implements HomeProductRepo {
 
     });
 
+  }
+
+  @override
+  Future<Either<Failure, List<ProductRateModel>>> getProductRate({required String productId}) async{
+    final response=await apiServices.getData(path: productRateUrl+productId);
+    return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+      final data = successResponse as List;
+      print(data);
+      final products = data.map((e) => ProductRateModel.fromJson(e as Map<String, dynamic>)).toList();
+      return Right(products);
+    });
   }
 
 }

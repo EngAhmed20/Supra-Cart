@@ -1,3 +1,4 @@
+import '../../generated/assets.dart';
 import '../models/product_model.dart';
 
 final List<ProductModel> dummyProductList = [
@@ -8,7 +9,7 @@ final List<ProductModel> dummyProductList = [
     oldPrice: 17999.0,
     description: 'Lenovo IdeaPad 3 with Intel Core i5, 8GB RAM, 256GB SSD.',
     category: 'Laptops',
-    imageUrl: 'https://m.media-amazon.com/images/I/71gD8WdSlaL._AC_SX679_.jpg',
+    imageUrl: Assets.imagesSupraLogo,
     favoriteProducts: [],
     purchaseTable: [],
   ),
@@ -19,7 +20,7 @@ final List<ProductModel> dummyProductList = [
     oldPrice: 21999.0,
     description: 'HP Pavilion x360 14" Touchscreen Laptop, Intel i5, 512GB SSD.',
     category: 'Laptops',
-    imageUrl: 'https://m.media-amazon.com/images/I/81MZIT+HWhL._AC_SX679_.jpg',
+    imageUrl: Assets.imagesSupraLogo,
     favoriteProducts: [],
     purchaseTable: [],
   ),
@@ -30,7 +31,7 @@ final List<ProductModel> dummyProductList = [
     oldPrice: 0.0,
     description: 'Dell Inspiron 15 3000, 11th Gen Intel Core i3, 256GB SSD.',
     category: 'Laptops',
-    imageUrl: 'https://m.media-amazon.com/images/I/71q0UllDmyL._AC_SX679_.jpg',
+    imageUrl: Assets.imagesSupraLogo,
     favoriteProducts: [],
     purchaseTable: [],
   ),

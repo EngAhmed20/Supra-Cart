@@ -8,6 +8,7 @@ import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
 import '../../features/profile/ui/widgets/edit_name_view.dart';
 import '../../features/profile/ui/widgets/my_orders_view.dart';
+import '../models/product_model.dart';
 
 Route<dynamic> onGenerateRoute(RouteSettings settings){
   switch(settings.name){
@@ -26,7 +27,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
     case MyOrdersView.routeName:
       return MaterialPageRoute(builder: (_) => const MyOrdersView());
     case ProductDetailsView.routeName:
-      return MaterialPageRoute(builder: (_)=> ProductDetailsView());
+      final product = settings.arguments as ProductModel;
+      return MaterialPageRoute(builder: (_)=> ProductDetailsView(product: product,));
 
 
     default:

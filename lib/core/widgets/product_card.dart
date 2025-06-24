@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/models/product_model.dart';
-import 'package:supra_cart/features/product_details/ui/product_details_view.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/widgets/cached_img.dart';
@@ -10,18 +9,19 @@ import '../../features/auth/ui/widgets/custom_text_button.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
-    super.key, required this.productModel, required this.buyNowButton, required this.favButton,
+    super.key, required this.productModel, required this.buyNowButton, required this.favButton, this.onTap,
   });
   final ProductModel productModel;
   final  void Function() buyNowButton;
   final  void Function() favButton;
+  final void Function()? onTap;
 
 
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: ()=>Navigator.pushNamed(context, ProductDetailsView.routeName),
+      onTap:onTap,
       child: Card(
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.h),

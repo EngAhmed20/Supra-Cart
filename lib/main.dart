@@ -11,6 +11,8 @@ import 'package:supra_cart/features/auth/logic/cubit/authentication_cubit.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
 import 'core/helper_function/on_generate_route.dart';
+import 'core/repo/product_repo.dart';
+import 'features/home/logic/cubit/home_cubit/home_cubit.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,8 +35,13 @@ class SupraCart extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       builder:(_,child){
-       return BlocProvider(
-         create: (context)=>AuthenticationCubit(getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..getUserDataFromPrefs(),
+       return MultiBlocProvider(
+         providers: [
+           BlocProvider<AuthenticationCubit>(create: (context)=>
+           AuthenticationCubit(getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..getUserDataFromPrefs(),
+        ),
+           BlocProvider(create: (context) => HomeCubit(getIt.get<HomeProductRepo>())..getHomeProducts(),)],
+
          child: MaterialApp(
             title: 'Supra Market',
             theme: ThemeData(

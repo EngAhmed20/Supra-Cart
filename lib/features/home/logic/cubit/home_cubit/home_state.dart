@@ -21,3 +21,12 @@ class GetHomeProductsFailure extends HomeState {
 
   GetHomeProductsFailure(this.errorMessage);
 }
+class GetProductRateLoading extends HomeState {}
+class GetProductRateSuccess extends HomeState {
+
+}
+class GetProductRateFailure extends HomeState {
+  final String errorMessage;
+
+  GetProductRateFailure(this.errorMessage);
+}

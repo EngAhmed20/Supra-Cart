@@ -10,7 +10,7 @@ class ProductDetails extends StatelessWidget {
   });
   final String productName;
   final double productPrice;
-  final double? reviewRating;
+  final int? reviewRating;
   final Color? favIconColor;
   final void Function()? addToFavFun;
 
@@ -35,7 +35,7 @@ class ProductDetails extends StatelessWidget {
       ),
       subtitle: Row(
         children: [
-          Text(reviewRating!=null?'${reviewRating}':'0', style:textStyle.regular18,),
+          Text(reviewRating!=null?'${reviewRating} /5':'0', style:textStyle.regular18,),
           SizedBox(width: 4),
           Icon(Icons.star, color: Colors.amber, size: 25.h),
           Spacer(), // مسافة بين التقييم وزر المفضلة

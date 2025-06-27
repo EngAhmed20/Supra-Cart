@@ -30,3 +30,10 @@ class GetProductRateFailure extends HomeState {
 
   GetProductRateFailure(this.errorMessage);
 }
+class AddOrUpdateUserRateLoading extends HomeState {}
+class AddOrUpdateUserRateSuccess extends HomeState {}
+class AddOrUpdateUserRateFailure extends HomeState {
+  final String errorMessage;
+
+  AddOrUpdateUserRateFailure(this.errorMessage);
+}

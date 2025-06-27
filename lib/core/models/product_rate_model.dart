@@ -1,9 +1,9 @@
 class ProductRateModel {
   final int? id;
   final DateTime createdAt;
-  final int rate;
-  final String forUser;
-  final String forProduct;
+  final int? rate;
+  final String? forUser;
+  final String? forProduct;
 
   ProductRateModel({
     this.id,
@@ -17,9 +17,9 @@ class ProductRateModel {
     return ProductRateModel(
       id: json['id'],
       createdAt: DateTime.parse(json['created_at']),
-      rate: json['rate'],
-      forUser: json['for_user'],
-      forProduct: json['for_product'],
+      rate: json['rate']?? 0,
+      forUser: json['for_user']?? '',
+      forProduct: json['for_product']??'',
     );
   }
 

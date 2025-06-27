@@ -8,4 +8,7 @@ abstract class HomeProductRepo{
   Future<Either<Failure,List<ProductModel>>>getHomeProducts();
   Future<Either<Failure,List<ProductRateModel>>>getProductRate(
       {required String productId});
+  Future<Either<Failure,void>>addOrUpdateUserRate(
+      {required String productId, required int rate, required String userId,required bool isUpdate});
+
 }

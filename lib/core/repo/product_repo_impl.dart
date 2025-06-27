@@ -33,4 +33,28 @@ class HomeProductRepoImpl implements HomeProductRepo {
     });
   }
 
+  @override
+  Future<Either<Failure, void>> addOrUpdateUserRate({required String productId, required int rate, required String userId, required bool
+  isUpdate}) async{
+    if(isUpdate){
+      final response=await apiServices.patchData(path:'${baseUrl}rates_table?select=*&for_user=eq.$userId&for_product=eq.$productId', data: {
+        "rate": rate,
+      });
+      return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+        return Right(null);
+      });
+    }else{
+      final response=await apiServices.postData(path: productRateAddUrl, data: {
+        "for_user": userId,
+        "for_product": productId,
+        "rate": rate,
+      });
+      return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+        return Right(null);
+      });
+
+    }
+
+  }
+
 }

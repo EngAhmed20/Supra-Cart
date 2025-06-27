@@ -6,6 +6,7 @@ import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
 import 'package:supra_cart/core/widgets/custom_app_bar.dart';
+import 'package:supra_cart/core/widgets/custom_snack_bar.dart';
 import 'package:supra_cart/core/widgets/custom_text_form.dart';
 import 'package:supra_cart/core/widgets/loadibg_ink_drop.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
@@ -49,6 +50,7 @@ class ProductDetailsView extends StatelessWidget {
                       ProductDetails(
                         productName: product.name,
                         productPrice: product.price,
+                        reviewRating: cubit.avgRate,
                         addToFavFun: () {},
                       ),
                       SizedBox(height: 20.h),
@@ -57,7 +59,7 @@ class ProductDetailsView extends StatelessWidget {
                       SizedBox(height: 15.h),
                       /// rating bar
                       RatingBar.builder(
-                        initialRating: 0,
+                        initialRating: cubit.userRate.toDouble(),
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: false,
@@ -66,7 +68,7 @@ class ProductDetailsView extends StatelessWidget {
                         itemBuilder:
                             (context, _) => Icon(Icons.star, color: Colors.amber),
                         onRatingUpdate: (rating) {
-                          print(rating);
+                          cubit.addOrUpdateUserRate(productId:product.id ,rate: rating.toInt());
                         },
                       ),
                       SizedBox(height: 20.h),
@@ -106,7 +108,14 @@ class ProductDetailsView extends StatelessWidget {
               ],
             ),
           );
-    }, listener: (context,state){});
+    }, listener: (context,state){
+      if (state is AddOrUpdateUserRateSuccess) {
+        customSnackBar(context: context, msg: 'Rating added successfully.', isError: false);
+      }
+      else if (state is AddOrUpdateUserRateFailure) {
+        customSnackBar(context: context, msg:'An error occurred.Please try again later.', isError: true);
+      }
+    });
   }
 }
 

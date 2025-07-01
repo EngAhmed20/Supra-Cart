@@ -3,6 +3,7 @@ import 'package:supra_cart/features/auth/ui/forget_pass_view.dart';
 import 'package:supra_cart/features/auth/ui/login_view.dart';
 import 'package:supra_cart/features/auth/ui/sign_up_view.dart';
 import 'package:supra_cart/features/home/ui/main_home_view.dart';
+import 'package:supra_cart/features/home/ui/widgets/search_view.dart';
 import 'package:supra_cart/features/product_details/ui/product_details_view.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
@@ -29,6 +30,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
     case ProductDetailsView.routeName:
       final product = settings.arguments as ProductModel;
       return MaterialPageRoute(builder: (_)=> ProductDetailsView(product: product,));
+    case SearchView.routeName:
+      return MaterialPageRoute(builder: (_) => const SearchView());
 
 
     default:

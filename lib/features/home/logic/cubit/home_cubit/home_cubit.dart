@@ -22,12 +22,14 @@ class HomeCubit extends Cubit<HomeState> {
   final HomeProductRepo homeRepo;
   SupabaseClient client;
   late TextEditingController feedBackController;
+  late TextEditingController searchController;
   late GlobalKey<FormState> feedbackFormKey;
    SharedPreferences sharedPreferences;
   int currentIndex = 0;
   init()async{
     feedBackController = TextEditingController();
     feedbackFormKey = GlobalKey<FormState>();
+    searchController = TextEditingController();
     await getUserDataFromPrefs();
     emit(HomeCubitInit());
   }

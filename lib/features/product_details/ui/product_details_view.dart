@@ -3,14 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/models/product_model.dart';
-import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
 import 'package:supra_cart/core/widgets/custom_app_bar.dart';
 import 'package:supra_cart/core/widgets/custom_snack_bar.dart';
-import 'package:supra_cart/core/widgets/custom_text_form.dart';
 import 'package:supra_cart/core/widgets/loadibg_ink_drop.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
-import 'package:supra_cart/features/product_details/ui/widgets/comments_widget.dart';
+import 'package:supra_cart/features/product_details/ui/widgets/feedback_view.dart';
 import 'package:supra_cart/features/product_details/ui/widgets/product_details_widget.dart';
 
 import '../../../core/widgets/product_img.dart';
@@ -51,7 +49,7 @@ class ProductDetailsView extends StatelessWidget {
                         productName: product.name,
                         productPrice: product.price,
                         reviewRating: cubit.avgRate,
-                        addToFavFun: () {},
+                        addToFavFun: (){},
                       ),
                       SizedBox(height: 20.h),
                       /// description
@@ -73,35 +71,7 @@ class ProductDetailsView extends StatelessWidget {
                       ),
                       SizedBox(height: 20.h),
                       /// feedback
-                      CustomTextFormField(hintText: 'Type your feedback here',
-                        maxLines: 2,
-
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your feedback';
-                          }
-                          return null;
-                        },
-                        suffixIcon: IconButton(onPressed: (){}, icon:Icon(
-                          Icons.send, color: AppColors.kGreyColor, size: 25.sp,
-                        )),
-                      ),
-                      SizedBox(height: 15.h),
-                      ///comments
-                      Row(
-                        children: [
-                          Text('Comments', style: textStyle.Bold19),
-
-
-                        ],
-                      ),
-                      SizedBox(height: 15.h),
-                      /// comments list
-                      ListView.builder(
-                        physics: NeverScrollableScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: 10,
-                        itemBuilder:(context,index)=>CommentsWidget(userName: 'Ahmed',userComment: 'good and useful product',),)
+                      FeedbackView(cubit: cubit,productId:product.id ,),
                     ],
                   ),
                 ),
@@ -113,6 +83,12 @@ class ProductDetailsView extends StatelessWidget {
         customSnackBar(context: context, msg: 'Rating added successfully.', isError: false);
       }
       else if (state is AddOrUpdateUserRateFailure) {
+        customSnackBar(context: context, msg:'An error occurred.Please try again later.', isError: true);
+      }
+      else if (state is AddCommentSuccess){
+        customSnackBar(context: context, msg: 'Comment added successfully.', isError: false);
+      }
+      else if (state is AddCommentFailure){
         customSnackBar(context: context, msg:'An error occurred.Please try again later.', isError: true);
       }
     });

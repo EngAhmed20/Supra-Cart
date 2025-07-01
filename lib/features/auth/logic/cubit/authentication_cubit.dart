@@ -309,7 +309,6 @@ Future<void>saveUserDataToPrefs(UserModel model)async{
       final userData=jsonDecode(prefs);
       userSavedDataModel= UserModel.fromJson(userData);
       await sharedPreferences.setString(userId, userSavedDataModel.id!);
-      print('current user id: ${sharedPreferences.getString(userId)}');
       emit(AuthenticationUserDataLoaded(userSavedDataModel));
       return;
     }

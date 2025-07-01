@@ -37,3 +37,19 @@ class AddOrUpdateUserRateFailure extends HomeState {
 
   AddOrUpdateUserRateFailure(this.errorMessage);
 }
+class AddCommentLoading extends HomeState {}
+class AddCommentSuccess extends HomeState {}
+class AddCommentFailure extends HomeState {
+  final String errorMessage;
+
+  AddCommentFailure(this.errorMessage);
+}
+class GetProductCommentsLoading extends HomeState {}
+class GetProductCommentsSuccess extends HomeState {
+
+}
+class GetProductCommentsFailure extends HomeState {
+  final String errorMessage;
+
+  GetProductCommentsFailure(this.errorMessage);
+}

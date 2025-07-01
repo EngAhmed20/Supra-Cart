@@ -37,8 +37,10 @@ class ProductList extends StatelessWidget {
           shrinkWrap:shrinkWrap?? true,
           physics: physics??NeverScrollableScrollPhysics(),
           itemBuilder: (context,index)=> ProductCard(productModel:cubit.homeProducts[index], buyNowButton: () {
-          }, favButton: () {  },onTap: (){
-            cubit.getProductRate(productId: cubit.homeProducts[index].id);
+
+          }, favButton: () {  },onTap: ()async{
+            await cubit.getProductRate(productId: cubit.homeProducts[index].id);
+            await cubit.getProductComments(productId: cubit.homeProducts[index].id);
             Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: cubit.homeProducts[index]);
           },),
           separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: cubit.homeProducts.length);

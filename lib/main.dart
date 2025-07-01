@@ -40,7 +40,7 @@ class SupraCart extends StatelessWidget {
            BlocProvider<AuthenticationCubit>(create: (context)=>
            AuthenticationCubit(getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..getUserDataFromPrefs(),
         ),
-           BlocProvider(create: (context) => HomeCubit(getIt.get<HomeProductRepo>(),getIt.get<SupabaseClient>())..getHomeProducts(),)],
+           BlocProvider(create: (context) => HomeCubit(getIt.get<HomeProductRepo>(),getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..init()..getHomeProducts(),)],
 
          child: MaterialApp(
             title: 'Supra Market',

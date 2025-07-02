@@ -31,5 +31,6 @@ class ServicesLoacator {
     getIt.registerLazySingleton<BaseApiServices>(() => ApiServices(dio: getIt<Dio>()));
     getIt.registerLazySingleton<HomeProductRepo>(()=>HomeProductRepoImpl(apiServices: getIt.get<BaseApiServices>()));
 
+
   }
 }

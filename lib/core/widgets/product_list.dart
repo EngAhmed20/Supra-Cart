@@ -10,6 +10,7 @@ import '../helper_function/dummy_product_list.dart';
 import '../style/app_colors.dart';
 
 class ProductList extends StatelessWidget {
+  final String routeName = '/productList';
   const ProductList({
     super.key, this.shrinkWrap, this.physics,
   });
@@ -19,6 +20,8 @@ class ProductList extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocConsumer<HomeCubit,HomeState>(builder: (context,state){
       var cubit= context.read<HomeCubit>();
+      final productToDisplay=cubit.searchController.text.isNotEmpty?
+          cubit.productSearchList:cubit.homeProducts;
       if (state is GetHomeProductsLoading) {
         return Skeletonizer(child: ListView.separated(
             shrinkWrap:shrinkWrap?? true,
@@ -32,18 +35,22 @@ class ProductList extends StatelessWidget {
         );
       } else if (state is GetHomeProductsFailure) {
         return Center(child: Text(state.errorMessage,style: textStyle.Bold16,));
+      } else if(state is SearchProductsFailure){
+        return Center(child: Text("No matching products found.",style: textStyle.Bold16,));
+
+
       }
       return ListView.separated(
           shrinkWrap:shrinkWrap?? true,
           physics: physics??NeverScrollableScrollPhysics(),
-          itemBuilder: (context,index)=> ProductCard(productModel:cubit.homeProducts[index], buyNowButton: () {
+          itemBuilder: (context,index)=> ProductCard(productModel:productToDisplay[index], buyNowButton: () {
 
           }, favButton: () {  },onTap: ()async{
-            await cubit.getProductRate(productId: cubit.homeProducts[index].id);
-            await cubit.getProductComments(productId: cubit.homeProducts[index].id);
-            Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: cubit.homeProducts[index]);
+            await cubit.getProductRate(productId: productToDisplay[index].id);
+            await cubit.getProductComments(productId: productToDisplay[index].id);
+            Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: productToDisplay[index]);
           },),
-          separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: cubit.homeProducts.length);
+          separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: productToDisplay.length);
     }, listener: (context,state){
 
     });

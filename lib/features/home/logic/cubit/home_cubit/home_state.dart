@@ -53,3 +53,11 @@ class GetProductCommentsFailure extends HomeState {
 
   GetProductCommentsFailure(this.errorMessage);
 }
+class SearchProductsFailure extends HomeState {
+  final String errorMessage;
+
+  SearchProductsFailure(this.errorMessage);
+}
+class Closed extends HomeState{
+
+}

@@ -28,6 +28,7 @@ class HomeView extends StatelessWidget {
             return null;
           },
           searchAction: (){
+           cubit.search(cubit.searchController.text);
             Navigator.pushNamed(context, SearchView.routeName);
 
           },),

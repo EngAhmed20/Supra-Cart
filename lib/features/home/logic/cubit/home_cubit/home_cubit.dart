@@ -67,6 +67,7 @@ class HomeCubit extends Cubit<HomeState> {
         for (var product in successResponse) {
           homeProducts.add(product);
         }
+
         emit(GetHomeProductsSuccess(successResponse));
       },
     );
@@ -197,4 +198,27 @@ class HomeCubit extends Cubit<HomeState> {
 
     }
   }
+  ///////////////////search
+  List<ProductModel>productSearchList = [];
+void search(String query) {
+  productSearchList.clear();
+  emit(GetHomeProductsLoading());
+  for (var product in homeProducts) {
+    if (product.name.toLowerCase().contains(query.toLowerCase())) {
+      productSearchList.add(product);
+    }
+  }
+  if (productSearchList.isEmpty) {
+    emit(SearchProductsFailure('No products found'));
+  } else {
+    emit(GetHomeProductsSuccess(productSearchList));
+  }
+}
+
+
+clearSearchController(){
+  searchController.clear();
+  emit(Closed());
+
+}
 }

@@ -14,6 +14,7 @@ import 'package:supra_cart/core/utilis/user_model.dart';
 import '../../../../../core/models/comments_model.dart';
 import '../../../../../core/models/product_rate_model.dart';
 import '../../../../../core/utilis/constants.dart';
+import '../../../ui/widgets/search_view.dart';
 
 part 'home_state.dart';
 
@@ -24,11 +25,15 @@ class HomeCubit extends Cubit<HomeState> {
   late TextEditingController feedBackController;
   late TextEditingController searchController;
   late GlobalKey<FormState> feedbackFormKey;
+  late GlobalKey<FormState>searchForm;
+   AutovalidateMode autovalidateMode= AutovalidateMode.disabled;
+
    SharedPreferences sharedPreferences;
   int currentIndex = 0;
   init()async{
     feedBackController = TextEditingController();
     feedbackFormKey = GlobalKey<FormState>();
+    searchForm = GlobalKey<FormState>();
     searchController = TextEditingController();
     await getUserDataFromPrefs();
     emit(HomeCubitInit());
@@ -214,11 +219,51 @@ void search(String query) {
     emit(GetHomeProductsSuccess(productSearchList));
   }
 }
+//searchButton
+  void searchButton(context) {
+    if (searchForm.currentState!.validate()) {
+      search(searchController.text);
+      Navigator.pushNamed(context, SearchView.routeName);
+      autovalidateMode = AutovalidateMode.disabled;
 
+    } else {
+      autovalidateMode = AutovalidateMode.always;
+      emit(AutoValidateState());
 
-clearSearchController(){
+    }
+  }
+
+///////////////category
+  List<ProductModel> productCategoryList = [];
+ String?categoryName;
+  void filterByCategory({required String category}) {
+    categoryName=category;
+    productCategoryList.clear();
+    emit(GetHomeProductsLoading());
+    for (var product in homeProducts) {
+      if (product.category.trim().toLowerCase() == category.toLowerCase()) {
+        productCategoryList.add(product);
+      }
+    }
+    if (productCategoryList.isEmpty) {
+      emit(GetCategoryProductFailure('No products found'));
+    } else {
+      emit(GetHomeProductsSuccess(productCategoryList));
+    }
+  }
+
+clear(){
   searchController.clear();
+  categoryName=null;
   emit(Closed());
 
 }
+
+  @override
+  Future<void> close() {
+    _streamSubscription?.cancel();
+    feedBackController.dispose();
+    searchController.dispose();
+    return super.close();
+  }
 }

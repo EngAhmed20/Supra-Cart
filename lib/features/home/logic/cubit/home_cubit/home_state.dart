@@ -58,6 +58,14 @@ class SearchProductsFailure extends HomeState {
 
   SearchProductsFailure(this.errorMessage);
 }
+class GetCategoryProductFailure extends HomeState {
+  final String errorMessage;
+
+  GetCategoryProductFailure(this.errorMessage);
+}
 class Closed extends HomeState{
+
+}
+class AutoValidateState extends HomeState {
 
 }

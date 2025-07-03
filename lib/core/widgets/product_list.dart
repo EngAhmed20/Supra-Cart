@@ -21,7 +21,7 @@ class ProductList extends StatelessWidget {
     return BlocConsumer<HomeCubit,HomeState>(builder: (context,state){
       var cubit= context.read<HomeCubit>();
       final productToDisplay=cubit.searchController.text.isNotEmpty?
-          cubit.productSearchList:cubit.homeProducts;
+          cubit.productSearchList:cubit.categoryName!=null?cubit.productCategoryList:cubit.homeProducts;
       if (state is GetHomeProductsLoading) {
         return Skeletonizer(child: ListView.separated(
             shrinkWrap:shrinkWrap?? true,
@@ -35,7 +35,7 @@ class ProductList extends StatelessWidget {
         );
       } else if (state is GetHomeProductsFailure) {
         return Center(child: Text(state.errorMessage,style: textStyle.Bold16,));
-      } else if(state is SearchProductsFailure){
+      } else if(state is SearchProductsFailure||state is GetCategoryProductFailure){
         return Center(child: Text("No matching products found.",style: textStyle.Bold16,));
 
 

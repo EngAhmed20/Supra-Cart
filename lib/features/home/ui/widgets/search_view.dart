@@ -15,7 +15,7 @@ class SearchView extends StatelessWidget {
 
         return Scaffold(
           appBar: customAppBar(context, title: 'Search Result',onPressed: ()async{
-            await context.read<HomeCubit>().clearSearchController();
+            await context.read<HomeCubit>().clear();
             Navigator.pop(context);
           }),
           body:Padding(

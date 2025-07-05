@@ -11,19 +11,19 @@ class SearchView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
-
-        return Scaffold(
-          appBar: customAppBar(context, title: 'Search Result',onPressed: ()async{
-            await context.read<HomeCubit>().clear();
-            Navigator.pop(context);
-          }),
-          body:Padding(
-            padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-            child: ProductList(),
-          ),
-        );
-
-
+    return Scaffold(
+      appBar: customAppBar(
+        context,
+        title: 'Search Result',
+        onPressed: () async {
+          await context.read<HomeCubit>().clear();
+          Navigator.pop(context);
+        },
+      ),
+      body: Padding(
+        padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
+        child: ProductList(physics: BouncingScrollPhysics()),
+      ),
+    );
   }
 }

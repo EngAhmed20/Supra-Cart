@@ -26,7 +26,10 @@ class HomeCubit extends Cubit<HomeState> {
   late TextEditingController searchController;
   late GlobalKey<FormState> feedbackFormKey;
   late GlobalKey<FormState>searchForm;
-   AutovalidateMode autovalidateMode= AutovalidateMode.disabled;
+  late GlobalKey<FormState>storeSearchForm;
+
+
+  AutovalidateMode autovalidateMode= AutovalidateMode.disabled;
 
    SharedPreferences sharedPreferences;
   int currentIndex = 0;
@@ -34,6 +37,7 @@ class HomeCubit extends Cubit<HomeState> {
     feedBackController = TextEditingController();
     feedbackFormKey = GlobalKey<FormState>();
     searchForm = GlobalKey<FormState>();
+    storeSearchForm = GlobalKey<FormState>();
     searchController = TextEditingController();
     await getUserDataFromPrefs();
     emit(HomeCubitInit());
@@ -220,16 +224,29 @@ void search(String query) {
   }
 }
 //searchButton
-  void searchButton(context) {
-    if (searchForm.currentState!.validate()) {
-      search(searchController.text);
-      Navigator.pushNamed(context, SearchView.routeName);
-      autovalidateMode = AutovalidateMode.disabled;
+  void searchButton(context, {bool fromView = true}) {
+    if(fromView){
+      if (searchForm.currentState!.validate()) {
+        search(searchController.text);
+        Navigator.pushNamed(context, SearchView.routeName);
+        autovalidateMode = AutovalidateMode.disabled;
 
-    } else {
-      autovalidateMode = AutovalidateMode.always;
-      emit(AutoValidateState());
+      } else {
+        autovalidateMode = AutovalidateMode.always;
+        emit(AutoValidateState());
 
+      }
+    }else{
+      if (storeSearchForm.currentState!.validate()) {
+        search(searchController.text);
+        Navigator.pushNamed(context, SearchView.routeName);
+        autovalidateMode = AutovalidateMode.disabled;
+
+      } else {
+        autovalidateMode = AutovalidateMode.always;
+        emit(AutoValidateState());
+
+      }
     }
   }
 

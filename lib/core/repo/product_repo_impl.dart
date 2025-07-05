@@ -86,4 +86,34 @@ class HomeProductRepoImpl implements HomeProductRepo {
 
   }
 
+  @override
+  Future<Either<Failure, void>> addProductToFav({required String productId, required String userId, required bool isFav}) async {
+   try{
+     final response=await apiServices.postData(path: favTable,data: {
+        "for_user": userId,
+        "for_product": productId,
+        "is_favorite": isFav
+     });
+      return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+        return Right(null);
+      });
+     
+   }catch(e){
+      return Left(Failure(message: 'Failed to add product to favorites: ${e.toString()}'));
+   }
+  }
+
+  @override
+  Future<Either<Failure, void>> removeProductFromFav({required String productId, required String userId}) async{
+    try{
+      final response=await apiServices.deleteData(path: '$favTable?for_user=eq.$userId&for_product=eq.$productId');
+      return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+        return Right(null);
+      });
+
+    }catch(e){
+      return Left(Failure(message: 'Failed to remove product from favorites: ${e.toString()}'));
+    }
+  }
+
 }

@@ -69,3 +69,17 @@ class Closed extends HomeState{
 class AutoValidateState extends HomeState {
 
 }
+class AddToFavoritesLoading extends HomeState {}
+class AddToFavoritesSuccess extends HomeState {}
+class AddToFavoritesFailure extends HomeState {
+  final String errorMessage;
+
+  AddToFavoritesFailure(this.errorMessage);
+}
+class RemoveFromFavoritesLoading extends HomeState {}
+class RemoveFromFavoritesSuccess extends HomeState {}
+class RemoveFromFavoritesFailure extends HomeState {
+  final String errorMessage;
+
+  RemoveFromFavoritesFailure(this.errorMessage);
+}

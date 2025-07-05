@@ -42,6 +42,11 @@ class HomeCubit extends Cubit<HomeState> {
     await getUserDataFromPrefs();
     emit(HomeCubitInit());
   }
+  UserModel userSavedDataModel= UserModel(
+    id: '0',
+    name: 'userName',
+    email: 'UserEmail',
+  );
   Future<void> getUserDataFromPrefs() async {
     final prefs = await sharedPreferences.getString(userData);
     if (prefs != null) {
@@ -54,11 +59,7 @@ class HomeCubit extends Cubit<HomeState> {
 
   }
 
-  UserModel userSavedDataModel= UserModel(
-    id: '0',
-    name: 'userName',
-    email: 'UserEmail',
-  );
+
   void changeIndex(int index) {
     currentIndex = index;
     emit(NavBarChanged(currentIndex));
@@ -268,7 +269,45 @@ void search(String query) {
       emit(GetHomeProductsSuccess(productCategoryList));
     }
   }
-
+//////////////////////////////////////////////////////////////
+  /// add to fav
+  Future<void>addProductToFav({required String productId,})async{
+    emit(AddToFavoritesLoading());
+    final response =await homeRepo.addProductToFav(productId: productId, userId: userSavedDataModel.id!, isFav:true);
+    response.fold(
+          (failure) => emit(AddToFavoritesFailure(failure.message)),
+          (successResponse) async{
+        log('product added to fav');
+        await getHomeProducts();
+        emit(AddToFavoritesSuccess());
+      },
+    );
+  }
+  bool checkIsFav({required String productId}) {
+    for (var product in homeProducts) {
+      if (product.favoriteProducts.isNotEmpty) {
+        for (var fav in product.favoriteProducts) {
+          if (fav.forUser == userSavedDataModel.id! && fav.forProduct==productId&& fav.isFavorite == true) {
+            return true;
+          }
+        }
+      }
+    }
+    return false;
+  }
+  ///remove from fav
+  Future<void>removeProductFromFav({required String productId})async{
+    emit(RemoveFromFavoritesLoading());
+    final response =await homeRepo.removeProductFromFav(productId: productId, userId: userSavedDataModel.id!);
+    response.fold(
+          (failure) => emit(RemoveFromFavoritesFailure(failure.message)),
+          (successResponse) async{
+        log('product removed from fav');
+        await getHomeProducts();
+        emit(RemoveFromFavoritesSuccess());
+      },
+    );
+  }
 clear(){
   searchController.clear();
   categoryName=null;

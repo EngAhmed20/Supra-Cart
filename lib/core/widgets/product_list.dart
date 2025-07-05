@@ -8,6 +8,7 @@ import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart'
 import '../../features/product_details/ui/product_details_view.dart';
 import '../helper_function/dummy_product_list.dart';
 import '../style/app_colors.dart';
+import 'custom_snack_bar.dart';
 
 class ProductList extends StatelessWidget {
   final String routeName = '/productList';
@@ -45,13 +46,31 @@ class ProductList extends StatelessWidget {
           physics: physics??NeverScrollableScrollPhysics(),
           itemBuilder: (context,index)=> ProductCard(productModel:productToDisplay[index], buyNowButton: () {
 
-          }, favButton: () {  },onTap: ()async{
+          },isFav: cubit.checkIsFav(productId: productToDisplay[index].id)
+            , favButton: () {
+            bool isFav=cubit.checkIsFav(productId: productToDisplay[index].id);
+
+            isFav?cubit.removeProductFromFav(productId: productToDisplay[index].id):
+            cubit.addProductToFav(productId:productToDisplay[index].id);
+          },onTap: ()async{
             await cubit.getProductRate(productId: productToDisplay[index].id);
             await cubit.getProductComments(productId: productToDisplay[index].id);
             Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: productToDisplay[index]);
           },),
           separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: productToDisplay.length);
     }, listener: (context,state){
+       if (state is AddToFavoritesSuccess) {
+        customSnackBar(context: context, msg:'Awesome! The item is now in your favorites', isError: false);
+      }
+      else if (state is AddToFavoritesFailure){
+      customSnackBar(context: context, msg:'An error occurred.Please try again later.', isError: true);
+      }else if (state is RemoveFromFavoritesSuccess) {
+         customSnackBar(
+           context: context,
+           msg: 'Item has been removed from your favorites',
+           isError: false,
+         );
+       }
 
     });
   }

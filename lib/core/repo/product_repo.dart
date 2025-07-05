@@ -13,5 +13,7 @@ abstract class HomeProductRepo{
       {required String productId, required int rate, required String userId,required bool isUpdate});
   Stream<Either<Failure,List<CommentModel>>> getProductComments({required String productId});
   Future<Either<Failure,void>> addComment({required String productId, required String comment, required String userId,required String userName});
+  Future<Either<Failure,void>>addProductToFav({required String productId, required String userId,required bool isFav});
+  Future<Either<Failure,void>>removeProductFromFav({required String productId, required String userId});
 
 }

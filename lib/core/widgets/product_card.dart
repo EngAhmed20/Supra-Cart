@@ -9,12 +9,13 @@ import '../../features/auth/ui/widgets/custom_text_button.dart';
 
 class ProductCard extends StatelessWidget {
   const ProductCard({
-    super.key, required this.productModel, required this.buyNowButton, required this.favButton, this.onTap,
+    super.key, required this.productModel, required this.buyNowButton, required this.favButton, this.onTap, this.isFav=false,
   });
   final ProductModel productModel;
   final  void Function() buyNowButton;
   final  void Function() favButton;
   final void Function()? onTap;
+  final bool isFav;
 
 
 
@@ -46,7 +47,7 @@ class ProductCard extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(productModel.name,style: textStyle.Bold20,),
-                      IconButton(icon:Icon(Icons.favorite,size: 25.h,color: AppColors.kGreyColor), onPressed: favButton,),
+                      IconButton(icon:Icon(Icons.favorite,size: 25.h,color: isFav?AppColors.kRedColor:AppColors.kGreyColor), onPressed: favButton,),
                     ],),
                 ),
                 ListTile(title: Text('${productModel.price} LE',style: textStyle.Bold20,),

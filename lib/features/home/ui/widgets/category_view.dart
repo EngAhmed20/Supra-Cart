@@ -22,7 +22,7 @@ class CategoryView extends StatelessWidget {
       }),
       body:Padding(
         padding:  EdgeInsets.symmetric(horizontal: 10.w, vertical: 10.h),
-        child: ProductList(),
+        child: ProductList(physics: BouncingScrollPhysics(),),
       ),
     );
 

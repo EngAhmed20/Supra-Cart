@@ -328,7 +328,11 @@ void search(String query) {
           (successResponse) async{
         log('product removed from fav');
         await getHomeProducts();
+
         emit(RemoveFromFavoritesSuccess());
+        if(currentIndex==2){
+          getFavProducts();
+        }
       },
     );
   }

@@ -63,6 +63,9 @@ class HomeCubit extends Cubit<HomeState> {
   void changeIndex(int index) {
     currentIndex = index;
     emit(NavBarChanged(currentIndex));
+    if(index==2){
+      getFavProducts();
+    }
   }
 
   List <ProductModel> homeProducts = [];
@@ -295,6 +298,27 @@ void search(String query) {
     }
     return false;
   }
+  /// get favProducts
+  List<ProductModel> favProducts = [];
+  void getFavProducts() {
+    favProducts.clear();
+    emit(GetHomeProductsLoading());
+    for (var product in homeProducts) {
+      if (product.favoriteProducts.isNotEmpty) {
+        for (var fav in product.favoriteProducts) {
+          if (fav.forUser == userSavedDataModel.id! && fav.isFavorite ==true) {
+            favProducts.add(product);
+          }
+        }
+      }
+    }
+    if (favProducts.isEmpty) {
+      emit(GetFavoriteProductsFailure('No favorite products found'));
+    } else {
+      emit(GetFavoriteProductsSuccess());
+    }
+  }
+
   ///remove from fav
   Future<void>removeProductFromFav({required String productId})async{
     emit(RemoveFromFavoritesLoading());

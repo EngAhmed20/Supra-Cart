@@ -83,3 +83,12 @@ class RemoveFromFavoritesFailure extends HomeState {
 
   RemoveFromFavoritesFailure(this.errorMessage);
 }
+class GetFavoriteProductsLoading extends HomeState {}
+class GetFavoriteProductsSuccess extends HomeState {
+
+}
+class GetFavoriteProductsFailure extends HomeState {
+  final String errorMessage;
+
+  GetFavoriteProductsFailure(this.errorMessage);
+}

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dartz/dartz.dart';
 import 'package:dio/dio.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -77,6 +79,7 @@ class ApiServices extends BaseApiServices{
 
       });*/
     } catch (e) {
+      log(e.toString());
       yield Left(Failure(message: 'Exception: ${e.toString()}'));
     }
   }

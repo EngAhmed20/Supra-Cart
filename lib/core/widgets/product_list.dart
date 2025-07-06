@@ -12,66 +12,119 @@ import 'custom_snack_bar.dart';
 
 class ProductList extends StatelessWidget {
   final String routeName = '/productList';
-  const ProductList({
-    super.key, this.shrinkWrap, this.physics,
-  });
+  const ProductList({super.key, this.shrinkWrap, this.physics, this.showFavProduct=false});
   final bool? shrinkWrap;
   final ScrollPhysics? physics;
+  final bool? showFavProduct;
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<HomeCubit,HomeState>(builder: (context,state){
-      var cubit= context.read<HomeCubit>();
-      final productToDisplay=cubit.searchController.text.isNotEmpty?
-          cubit.productSearchList:cubit.categoryName!=null?cubit.productCategoryList:cubit.homeProducts;
-      if (state is GetHomeProductsLoading) {
-        return Skeletonizer(child: ListView.separated(
-            shrinkWrap:shrinkWrap?? true,
-            physics: physics??NeverScrollableScrollPhysics(),
-            itemBuilder: (context,index)=> ProductCard(productModel:dummyProductList[index], buyNowButton: () {  }, favButton: () {  },
-
-
+    return BlocConsumer<HomeCubit, HomeState>(
+      builder: (context, state) {
+        var cubit = context.read<HomeCubit>();
+        final productToDisplay =
+            cubit.searchController.text.isNotEmpty
+                ? cubit.productSearchList
+                : cubit.categoryName != null
+                ? cubit.productCategoryList
+                : showFavProduct ==true
+                ? cubit.favProducts
+                : cubit.homeProducts;
+        if (state is GetHomeProductsLoading) {
+          return Skeletonizer(
+            child: ListView.separated(
+              shrinkWrap: shrinkWrap ?? true,
+              physics: physics ?? NeverScrollableScrollPhysics(),
+              itemBuilder:
+                  (context, index) => ProductCard(
+                    productModel: dummyProductList[index],
+                    buyNowButton: () {},
+                    favButton: () {},
+                  ),
+              separatorBuilder:
+                  (context, index) =>
+                      Container(width: 5.h, color: AppColors.kGreyColor),
+              itemCount: dummyProductList.length,
             ),
-            separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: dummyProductList.length),
+          );
+        } else if (state is GetHomeProductsFailure) {
+          return Center(
+            child: Text(state.errorMessage, style: textStyle.Bold16),
+          );
+        } else if (state is SearchProductsFailure ||
+            state is GetCategoryProductFailure) {
+          return Center(
+            child: Text("No matching products found.", style: textStyle.Bold16),
+          );
+        } else if (state is GetFavoriteProductsFailure) {
+          return Center(
+            child: Text(
+              "You haven't added any products to your favorites yet.",textAlign: TextAlign.center,
+              style: textStyle.Bold16,
+            ),
+          );
+        }
+        return ListView.separated(
+          shrinkWrap: shrinkWrap ?? true,
+          physics: physics ?? NeverScrollableScrollPhysics(),
+          itemBuilder:
+              (context, index) => ProductCard(
+                productModel: productToDisplay[index],
+                buyNowButton: () {},
+                isFav: cubit.checkIsFav(productId: productToDisplay[index].id),
+                favButton: () {
+                  bool isFav = cubit.checkIsFav(
+                    productId: productToDisplay[index].id,
+                  );
 
+                  isFav
+                      ? cubit.removeProductFromFav(
+                        productId: productToDisplay[index].id,
+                      )
+                      : cubit.addProductToFav(
+                        productId: productToDisplay[index].id,
+                      );
+                },
+                onTap: () async {
+                  await cubit.getProductRate(
+                    productId: productToDisplay[index].id,
+                  );
+                  await cubit.getProductComments(
+                    productId: cubit.homeProducts[index].id,
+                  );
+                  Navigator.pushNamed(
+                    context,
+                    ProductDetailsView.routeName,
+                    arguments: productToDisplay[index],
+                  );
+                },
+              ),
+          separatorBuilder:
+              (context, index) =>
+                  Container(height: 10.h, color:Colors.transparent),
+          itemCount: productToDisplay.length,
         );
-      } else if (state is GetHomeProductsFailure) {
-        return Center(child: Text(state.errorMessage,style: textStyle.Bold16,));
-      } else if(state is SearchProductsFailure||state is GetCategoryProductFailure){
-        return Center(child: Text("No matching products found.",style: textStyle.Bold16,));
-
-
-      }
-      return ListView.separated(
-          shrinkWrap:shrinkWrap?? true,
-          physics: physics??NeverScrollableScrollPhysics(),
-          itemBuilder: (context,index)=> ProductCard(productModel:productToDisplay[index], buyNowButton: () {
-
-          },isFav: cubit.checkIsFav(productId: productToDisplay[index].id)
-            , favButton: () {
-            bool isFav=cubit.checkIsFav(productId: productToDisplay[index].id);
-
-            isFav?cubit.removeProductFromFav(productId: productToDisplay[index].id):
-            cubit.addProductToFav(productId:productToDisplay[index].id);
-          },onTap: ()async{
-            await cubit.getProductRate(productId: productToDisplay[index].id);
-            await cubit.getProductComments(productId: productToDisplay[index].id);
-            Navigator.pushNamed(context, ProductDetailsView.routeName,arguments: productToDisplay[index]);
-          },),
-          separatorBuilder: (context,index)=>Container(width: 5.h,color: AppColors.kGreyColor,), itemCount: productToDisplay.length);
-    }, listener: (context,state){
-       if (state is AddToFavoritesSuccess) {
-        customSnackBar(context: context, msg:'Awesome! The item is now in your favorites', isError: false);
-      }
-      else if (state is AddToFavoritesFailure){
-      customSnackBar(context: context, msg:'An error occurred.Please try again later.', isError: true);
-      }else if (state is RemoveFromFavoritesSuccess) {
-         customSnackBar(
-           context: context,
-           msg: 'Item has been removed from your favorites',
-           isError: false,
-         );
-       }
-
-    });
+      },
+      listener: (context, state) {
+        if (state is AddToFavoritesSuccess) {
+          customSnackBar(
+            context: context,
+            msg: 'Awesome! The item is now in your favorites',
+            isError: false,
+          );
+        } else if (state is AddToFavoritesFailure) {
+          customSnackBar(
+            context: context,
+            msg: 'An error occurred.Please try again later.',
+            isError: true,
+          );
+        } else if (state is RemoveFromFavoritesSuccess) {
+          customSnackBar(
+            context: context,
+            msg: 'Item has been removed from your favorites',
+            isError: false,
+          );
+        }
+      },
+    );
   }
 }

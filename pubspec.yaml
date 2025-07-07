@@ -47,6 +47,7 @@ dependencies:
   dio: ^5.8.0+1
   dartz: ^0.10.1
   skeletonizer: ^1.4.3
+  pay_with_paymob: ^1.4.0
 
 
 

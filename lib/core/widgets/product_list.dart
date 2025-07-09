@@ -1,10 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:pay_with_paymob/pay_with_paymob.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 import 'package:supra_cart/core/style/app_text_styles.dart';
 import 'package:supra_cart/core/widgets/product_card.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
+import '../../features/home/ui/main_home_view.dart';
 import '../../features/product_details/ui/product_details_view.dart';
 import '../helper_function/dummy_product_list.dart';
 import '../style/app_colors.dart';
@@ -69,7 +73,25 @@ class ProductList extends StatelessWidget {
           itemBuilder:
               (context, index) => ProductCard(
                 productModel: productToDisplay[index],
-                buyNowButton: () {},
+                buyNowButton: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentView(
+                        onPaymentSuccess: () async{
+                          await cubit.purchaseProduct(productId: productToDisplay[index].id);
+
+
+                        },
+                        onPaymentError: () {
+                          log("payment error");
+                          // Handle payment failure
+                        },
+                        price: productToDisplay[index].price.toDouble(),
+                      ),
+                    ),
+                  );
+                },
                 isFav: cubit.checkIsFav(productId: productToDisplay[index].id),
                 favButton: () {
                   bool isFav = cubit.checkIsFav(
@@ -123,7 +145,34 @@ class ProductList extends StatelessWidget {
             msg: 'Item has been removed from your favorites',
             isError: false,
           );
+        }else if(state is PurchaseProductSuccess) {
+
+          customSnackBar(
+            context: context,
+            msg: 'Product purchased successfully',
+            isError: false,
+          );
+          //          Navigator.pushReplacementNamed(context, MainHomeView.routeName);
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MainHomeView.routeName,
+                (route) => false,
+          );
+
+        }else if (state is PurchaseProductFailure) {
+          customSnackBar(
+            context: context,
+            msg: 'An error occurred.Please try again later.',
+            isError: true,
+          );
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            MainHomeView.routeName,
+                (route) => false,
+          );
+
         }
+
       },
     );
   }

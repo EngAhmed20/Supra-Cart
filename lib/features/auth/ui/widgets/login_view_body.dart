@@ -7,7 +7,6 @@ import 'package:supra_cart/core/widgets/loadibg_ink_drop.dart';
 import 'package:supra_cart/features/auth/logic/cubit/authentication_cubit.dart';
 import 'package:supra_cart/features/auth/ui/forget_pass_view.dart';
 import 'package:supra_cart/features/auth/ui/sign_up_view.dart';
-import 'package:supra_cart/features/home/ui/main_home_view.dart';
 
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/widgets/custom_snack_bar.dart';
@@ -145,7 +144,7 @@ class LoginViewBody extends StatelessWidget {
               msg: "Logged in successfully.",
               isError: false,
             );
-            Navigator.pushNamedAndRemoveUntil(context, MainHomeView.routeName, (route) => false);
+
           } else if (state is AuthenticationLoginFailure) {
             customSnackBar(context: context, msg: state.errorMessage);
           } else if (state is AuthenticationGoogleSignInFailure) {

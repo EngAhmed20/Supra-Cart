@@ -3,16 +3,20 @@ import 'dart:convert';
 import 'dart:developer';
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:meta/meta.dart';
+import 'package:pay_with_paymob/pay_with_paymob.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
+import 'package:supra_cart/core/secret_data.dart';
 import 'package:supra_cart/core/utilis/user_model.dart';
 
 import '../../../../../core/models/comments_model.dart';
 import '../../../../../core/models/product_rate_model.dart';
+import '../../../../../core/models/purchase_model.dart';
 import '../../../../../core/utilis/constants.dart';
 import '../../../ui/widgets/search_view.dart';
 
@@ -25,8 +29,8 @@ class HomeCubit extends Cubit<HomeState> {
   late TextEditingController feedBackController;
   late TextEditingController searchController;
   late GlobalKey<FormState> feedbackFormKey;
-  late GlobalKey<FormState>searchForm;
-  late GlobalKey<FormState>storeSearchForm;
+  //late GlobalKey<FormState>searchForm;
+ // late GlobalKey<FormState>storeSearchForm;
 
 
   AutovalidateMode autovalidateMode= AutovalidateMode.disabled;
@@ -36,10 +40,11 @@ class HomeCubit extends Cubit<HomeState> {
   init()async{
     feedBackController = TextEditingController();
     feedbackFormKey = GlobalKey<FormState>();
-    searchForm = GlobalKey<FormState>();
-    storeSearchForm = GlobalKey<FormState>();
+    //searchForm = GlobalKey<FormState>();
+    //storeSearchForm = GlobalKey<FormState>();
     searchController = TextEditingController();
     await getUserDataFromPrefs();
+    initPaymobIntegration();
     emit(HomeCubitInit());
   }
   UserModel userSavedDataModel= UserModel(
@@ -228,8 +233,8 @@ void search(String query) {
   }
 }
 //searchButton
-  void searchButton(context, {bool fromView = true}) {
-    if(fromView){
+  void searchButton(context,{required GlobalKey<FormState> searchForm}) {
+
       if (searchForm.currentState!.validate()) {
         search(searchController.text);
         Navigator.pushNamed(context, SearchView.routeName);
@@ -240,18 +245,7 @@ void search(String query) {
         emit(AutoValidateState());
 
       }
-    }else{
-      if (storeSearchForm.currentState!.validate()) {
-        search(searchController.text);
-        Navigator.pushNamed(context, SearchView.routeName);
-        autovalidateMode = AutovalidateMode.disabled;
 
-      } else {
-        autovalidateMode = AutovalidateMode.always;
-        emit(AutoValidateState());
-
-      }
-    }
   }
 
 ///////////////category
@@ -333,6 +327,52 @@ void search(String query) {
         if(currentIndex==2){
           getFavProducts();
         }
+      },
+    );
+  }
+  ///init paymob integration
+  void initPaymobIntegration()  {
+    PaymentData.initialize(
+      apiKey: SecretData.paymobApiKey, // Required: Found under Dashboard -> Settings -> Account Info -> API Key
+      iframeId: SecretData.iframeId, // Required: Found under Developers -> iframes
+      integrationCardId: SecretData.paymobIntegrationCardId, // Required: Found under Developers -> Payment Integrations -> Online Card ID
+      integrationMobileWalletId: SecretData.paymobIntegrationWalletId, // Required: Found under Developers -> Payment Integrations -> Mobile Wallet ID
+
+      // Optional User Data
+      userData:UserData(
+        email: userSavedDataModel.email??'NA', // Optional: Defaults to 'NA'
+        name: userSavedDataModel.name??'Na',
+      ),
+
+      // Optional Style Customizations
+      style: Style(
+        primaryColor: Colors.blue, // Default: Colors.blue
+        scaffoldColor: Colors.white, // Default: Colors.white
+        appBarBackgroundColor: Colors.blue, // Default: Colors.blue
+        appBarForegroundColor: Colors.white, // Default: Colors.white
+        textStyle: TextStyle(), // Default: TextStyle()
+        buttonStyle: ElevatedButton.styleFrom(), // Default: ElevatedButton.styleFrom()
+        circleProgressColor: Colors.blue, // Default: Colors.blue
+        unselectedColor: Colors.grey, // Default: Colors.grey
+      ),
+    );
+  }
+  /////////// purchase
+  /// add purchase to dataBase
+  Future<void> purchaseProduct({required String productId}) async {
+    emit(PurchaseProductLoading());
+    final purchaseModel = PurchaseModel(
+      forUser: userSavedDataModel.id!,
+      forProduct: productId,
+      isBought: true,
+      orderStatus: 'pending',
+    );
+    final response = await homeRepo.purchaseProduct(purchaseModel:purchaseModel);
+    response.fold(
+          (failure) => emit(PurchaseProductFailure(failure.message)),
+          (successResponse) {
+        log('product purchased successfully');
+        emit(PurchaseProductSuccess());
       },
     );
   }

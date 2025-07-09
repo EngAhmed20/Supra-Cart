@@ -9,11 +9,13 @@ class StoreView extends StatelessWidget {
   const  StoreView({super.key});
   @override
   Widget build(BuildContext context) {
+    var storeSearchForm = GlobalKey<FormState>();
+
     return BlocBuilder<HomeCubit,HomeState>(builder: (context,state){
       var cubit=context.watch<HomeCubit>();
 
       return Form(
-        key: cubit.storeSearchForm,
+        key:storeSearchForm,
         autovalidateMode: cubit.autovalidateMode,
         child: ListView(
           children: [
@@ -28,7 +30,7 @@ class StoreView extends StatelessWidget {
                 return null;
               },
               searchAction: (){
-                cubit.searchButton(context,fromView: false);
+                cubit.searchButton(context,searchForm: storeSearchForm);
 
               },),
             SizedBox(height: 20.h,),

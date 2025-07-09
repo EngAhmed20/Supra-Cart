@@ -92,3 +92,12 @@ class GetFavoriteProductsFailure extends HomeState {
 
   GetFavoriteProductsFailure(this.errorMessage);
 }
+class PurchaseProductLoading extends HomeState {}
+class PurchaseProductSuccess extends HomeState {
+
+}
+class PurchaseProductFailure extends HomeState {
+  final String errorMessage;
+
+  PurchaseProductFailure(this.errorMessage);
+}

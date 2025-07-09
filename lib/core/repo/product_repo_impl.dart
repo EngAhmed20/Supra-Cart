@@ -4,6 +4,7 @@ import 'package:supra_cart/core/helper_function/failure.dart';
 import 'package:supra_cart/core/models/comments_model.dart';
 import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/models/product_rate_model.dart';
+import 'package:supra_cart/core/models/purchase_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
 import 'package:supra_cart/core/utilis/constants.dart';
 
@@ -114,6 +115,19 @@ class HomeProductRepoImpl implements HomeProductRepo {
     }catch(e){
       return Left(Failure(message: 'Failed to remove product from favorites: ${e.toString()}'));
     }
+  }
+
+  @override
+  Future<Either<Failure, void>> purchaseProduct({required PurchaseModel purchaseModel}) async{
+   try{
+      final response=await apiServices.postData(path: purchaseTable, data: purchaseModel.toJson());
+      return response.fold((failure) => Left(Failure(message: failure.message)), (successResponse) {
+        return Right(null);
+      });
+
+   }catch(e){
+      return Left(Failure(message: 'Failed to purchase product: ${e.toString()}'));
+   }
   }
 
 }

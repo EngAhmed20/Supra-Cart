@@ -6,7 +6,6 @@ import 'package:supra_cart/core/widgets/custom_search_filed.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 import 'package:supra_cart/features/home/ui/widgets/category_view.dart';
 import 'package:supra_cart/features/home/ui/widgets/popular_category_item.dart';
-import 'package:supra_cart/features/home/ui/widgets/search_view.dart';
 import '../../../core/widgets/product_list.dart';
 import '../../../generated/assets.dart';
 import '../logic/models/category_name_model.dart';
@@ -17,9 +16,11 @@ class HomeView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var searchForm = GlobalKey<FormState>();
+
     var cubit=context.watch<HomeCubit>();
     return Form(
-      key: cubit.searchForm,
+      key:searchForm,
       autovalidateMode: cubit.autovalidateMode,
       child: ListView(
         children: [
@@ -32,7 +33,7 @@ class HomeView extends StatelessWidget {
               return null;
             },
             searchAction: (){
-             cubit.searchButton(context);
+             cubit.searchButton(context,searchForm: searchForm);
 
             },),
           SizedBox(height: 30.h,),

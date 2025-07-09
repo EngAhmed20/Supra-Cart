@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:supra_cart/features/auth/ui/login_view.dart';
+import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 import '../../../../core/widgets/custom_snack_bar.dart';
 import '../../../auth/logic/cubit/authentication_cubit.dart';
 import 'custom_profile_button.dart';
@@ -19,6 +20,7 @@ class LogoutWidget extends StatelessWidget {
       },);
     }, listener: (context,state){
       if (state is AuthenticationLogoutSuccess) {
+        context.read<HomeCubit>().changeIndex(0);
         customSnackBar(
           context: context,
           msg: "Logout successful.",

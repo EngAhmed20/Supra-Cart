@@ -13,6 +13,7 @@ import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
 import 'package:supra_cart/core/secret_data.dart';
 import 'package:supra_cart/core/utilis/user_model.dart';
+import 'package:supra_cart/features/profile/logic/purchase_product_model.dart';
 
 import '../../../../../core/models/comments_model.dart';
 import '../../../../../core/models/product_rate_model.dart';
@@ -21,6 +22,7 @@ import '../../../../../core/utilis/constants.dart';
 import '../../../ui/widgets/search_view.dart';
 
 part 'home_state.dart';
+enum OrderStatus {pending, processing, onTheWay, delivered}
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.homeRepo, this.client,this.sharedPreferences) : super(HomeCubitInit());
@@ -375,6 +377,35 @@ void search(String query) {
         emit(PurchaseProductSuccess());
       },
     );
+  }
+  /// get purchase product
+  List<PurchaseProductModel> purchaseProducts = [];
+  Future<void>getPurchaseProducts()async{
+   purchaseProducts.clear();
+   await getHomeProducts();
+   emit(GetHomeProductsLoading());
+   for(var product in homeProducts){
+     if(product.purchaseTable.isNotEmpty){
+       for(var purchase in product.purchaseTable){
+          if(purchase.forUser==userSavedDataModel.id! && purchase.isBought==true){
+            purchaseProducts.add(
+              PurchaseProductModel(
+                product: product,
+                purchaseModel: purchase,
+              ),
+            );
+          //  productStatusList.add(purchase.orderStatus);
+            log('purchase product added');
+          }
+       }
+     }
+   }
+   if(purchaseProducts.isEmpty){
+     emit(GetPurchaseHistoryFailure('No purchase history found'));
+   }else{
+      emit(GetPurchaseHistorySuccess());
+   }
+
   }
 clear(){
   searchController.clear();

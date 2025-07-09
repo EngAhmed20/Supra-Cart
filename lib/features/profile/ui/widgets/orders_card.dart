@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:supra_cart/core/models/product_model.dart';
+
+import '../../../../core/models/product_model.dart';
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text_styles.dart';
 import '../../../../core/widgets/cached_img.dart';
 import '../../../../core/widgets/loadibg_ink_drop.dart';
-import '../../features/auth/ui/widgets/custom_text_button.dart';
+import '../../../auth/ui/widgets/custom_text_button.dart';
 
-class ProductCard extends StatelessWidget {
-  const ProductCard({
-    super.key, required this.productModel, required this.buyNowButton, required this.favButton, this.onTap, this.isFav=false,
+class OrderCard extends StatelessWidget {
+  const OrderCard({
+    super.key, required this.productModel, this.cancelOrder,required this.buyNowButton, required this.favButton, this.onTap, required this.orderStatus,
   });
   final ProductModel productModel;
   final  void Function() buyNowButton;
   final  void Function() favButton;
   final void Function()? onTap;
-  final bool isFav;
+  final bool? cancelOrder;
+  final String orderStatus;
+
 
 
 
@@ -31,6 +34,7 @@ class ProductCard extends StatelessWidget {
           children: [
             Column(
               children: [
+                SizedBox(height: 5,),
                 ClipRRect(
                   borderRadius: BorderRadius.circular(10.h),
                   child:CachedImg(imgUrl: productModel.imageUrl,
@@ -44,14 +48,31 @@ class ProductCard extends StatelessWidget {
                 Padding(
                   padding:  EdgeInsets.symmetric(horizontal: 10.w),
                   child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Flexible(child: Text(productModel.name,style: textStyle.Bold20,)),
-                      IconButton(icon:Icon(Icons.favorite,size: 25.h,color: isFav?AppColors.kRedColor:AppColors.kGreyColor), onPressed: favButton,),
-                    ],),
+                    ],
+                  ),
                 ),
+                Padding(padding: EdgeInsets.symmetric(horizontal: 10.w),
+                  child:RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Order Status: ',
+                          style: textStyle.Bold16.copyWith(color: Colors.black),
+                        ),
+                        TextSpan(
+                          text:orderStatus,
+                          style: textStyle.Bold16.copyWith(color:Colors.blue),
+                        ),
+                      ],
+                    ),
+                  )
+
+                ),
+                SizedBox(height: 5.h,),
                 ListTile(title: Text('${productModel.price} LE',style: textStyle.Bold20,),
-                  trailing: CustomTextButton(text: 'Buy Now', onPressed: buyNowButton),
+                  trailing: CustomTextButton(text: 'Confirm Receipt',style: textStyle.Bold19.copyWith(color: AppColors.kWhiteColor), onPressed: buyNowButton),
                   subtitle:productModel.oldPrice!=0? Text('${productModel.oldPrice} LE',style: textStyle.regular16.copyWith(
                     decoration:TextDecoration.lineThrough,),):null,
                   contentPadding: EdgeInsets.symmetric(horizontal: 10.w),

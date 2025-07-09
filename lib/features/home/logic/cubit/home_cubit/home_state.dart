@@ -101,3 +101,10 @@ class PurchaseProductFailure extends HomeState {
 
   PurchaseProductFailure(this.errorMessage);
 }
+class GetPurchaseHistoryLoading extends HomeState {}
+class GetPurchaseHistorySuccess extends HomeState {}
+class GetPurchaseHistoryFailure extends HomeState {
+  final String errorMessage;
+
+  GetPurchaseHistoryFailure(this.errorMessage);
+}

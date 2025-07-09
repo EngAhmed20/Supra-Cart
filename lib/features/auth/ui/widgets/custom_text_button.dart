@@ -4,9 +4,11 @@ import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text_styles.dart';
 
 class CustomTextButton extends StatelessWidget {
-  const CustomTextButton({super.key, required this.text, this.radius, required this.onPressed});
+  const CustomTextButton({super.key, this.style, required this.text, this.radius, required this.onPressed, this.backgroundColor});
   final String text;
   final double? radius;
+  final TextStyle? style;
+  final Color?backgroundColor;
    final void Function() onPressed;
 
 
@@ -18,7 +20,7 @@ class CustomTextButton extends StatelessWidget {
 
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.all<Color>(
-          AppColors.kPrimaryColor,
+          backgroundColor?? AppColors.kPrimaryColor,
         ),
         padding: MaterialStateProperty.all<EdgeInsetsGeometry>(
           const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
@@ -32,7 +34,7 @@ class CustomTextButton extends StatelessWidget {
       ),
       child: Text(
         text,
-        style: textStyle.Bold24.copyWith(color: AppColors.kWhiteColor),
+        style: style??textStyle.Bold24.copyWith(color: AppColors.kWhiteColor),
       ),
     );
   }

@@ -80,7 +80,7 @@ class ProductList extends StatelessWidget {
                       builder: (context) => PaymentView(
                         onPaymentSuccess: () async{
                           await cubit.purchaseProduct(productId: productToDisplay[index].id);
-
+                          cubit.changeIndex(0);
 
                         },
                         onPaymentError: () {

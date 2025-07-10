@@ -22,7 +22,7 @@ import '../../../../../core/utilis/constants.dart';
 import '../../../ui/widgets/search_view.dart';
 
 part 'home_state.dart';
-enum OrderStatus {pending, processing, onTheWay, delivered}
+enum OrderStatus {pending,processing, onTheWay,delivered}
 
 class HomeCubit extends Cubit<HomeState> {
   HomeCubit(this.homeRepo, this.client,this.sharedPreferences) : super(HomeCubitInit());
@@ -367,7 +367,7 @@ void search(String query) {
       forUser: userSavedDataModel.id!,
       forProduct: productId,
       isBought: true,
-      orderStatus: 'pending',
+      orderStatus: 'Pending',
     );
     final response = await homeRepo.purchaseProduct(purchaseModel:purchaseModel);
     response.fold(
@@ -387,7 +387,7 @@ void search(String query) {
    for(var product in homeProducts){
      if(product.purchaseTable.isNotEmpty){
        for(var purchase in product.purchaseTable){
-          if(purchase.forUser==userSavedDataModel.id! && purchase.isBought==true){
+          if(purchase.forUser==userSavedDataModel.id! && purchase.isBought==true&&purchase.orderStatus!='Archived'){
             purchaseProducts.add(
               PurchaseProductModel(
                 product: product,
@@ -407,6 +407,44 @@ void search(String query) {
    }
 
   }
+  /// cancel purchase
+  Future<void>cancelPurchase({required String purchaseId})async{
+    emit(CancelPurchaseLoading());
+    final response = await homeRepo.cancelPurchase(purchaseId: purchaseId);
+    response.fold(
+          (failure) => emit(CancelPurchaseFailure(failure.message)),
+          (successResponse) {
+        log('purchase cancelled successfully');
+        getPurchaseProducts();
+        emit(CancelPurchaseSuccess());
+      },
+    );
+  }
+  /// confirm receipt
+  Future<void>confirmReceipt({required String purchaseId})async{
+    emit(ConfirmReceiptLoading());
+    final response = await homeRepo.confirmReceipt(purchaseId: purchaseId);
+    response.fold(
+          (failure) => emit(ConfirmReceiptFailure(failure.message)),
+          (successResponse) {
+        getPurchaseProducts();
+        emit(ConfirmReceiptSuccess());
+      },
+    );
+  }
+  /// archive purchase
+  Future<void>archivePurchase({required String purchaseId})async{
+    emit(ArchivePurchaseLoading());
+    final response = await homeRepo.archivePurchase(purchaseId: purchaseId);
+    response.fold(
+          (failure) => emit(ArchivePurchaseFailure(failure.message)),
+          (successResponse) {
+        getPurchaseProducts();
+        emit(ArchivePurchaseSuccess());
+      },
+    );
+  }
+
 clear(){
   searchController.clear();
   categoryName=null;

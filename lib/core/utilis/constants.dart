@@ -9,3 +9,11 @@ const getProductCommentsUrl='comments_table?select=*&for_product=eq.';
 const postProductCommentsUrl='comments_table';
 const favTable='favorite_products';
 const purchaseTable='purchase_table';
+const List<String> orderStatusList = [
+  'Pending',
+  'Processing',
+  'Shipped',
+  'Delivered',
+  'Confirm Receipt',
+  'Archived',
+];

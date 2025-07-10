@@ -108,3 +108,24 @@ class GetPurchaseHistoryFailure extends HomeState {
 
   GetPurchaseHistoryFailure(this.errorMessage);
 }
+class CancelPurchaseLoading extends HomeState {}
+class CancelPurchaseSuccess extends HomeState {}
+class CancelPurchaseFailure extends HomeState {
+  final String errorMessage;
+
+  CancelPurchaseFailure(this.errorMessage);
+}
+class ConfirmReceiptLoading extends HomeState {}
+class ConfirmReceiptSuccess extends HomeState {}
+class ConfirmReceiptFailure extends HomeState {
+  final String errorMessage;
+
+  ConfirmReceiptFailure(this.errorMessage);
+}
+class ArchivePurchaseLoading extends HomeState {}
+class ArchivePurchaseSuccess extends HomeState {}
+class ArchivePurchaseFailure extends HomeState {
+  final String errorMessage;
+
+  ArchivePurchaseFailure(this.errorMessage);
+}

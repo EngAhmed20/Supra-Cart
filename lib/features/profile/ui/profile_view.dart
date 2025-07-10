@@ -17,13 +17,19 @@ class ProfileView extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           UserProfileInfo(),
+          SizedBox(height: 10.h),
+          CustomProfileButton(title: 'Delivery Info',icon: Icons.shopping_cart,onTap: (){
+            context.read<HomeCubit>().getPurchaseProducts();
 
+            Navigator.pushNamed(context, MyOrdersView.routeName);
+          },),
           SizedBox(height: 10.h),
           CustomProfileButton(title: 'My Orders',icon: Icons.shopping_cart,onTap: (){
             context.read<HomeCubit>().getPurchaseProducts();
 
             Navigator.pushNamed(context, MyOrdersView.routeName);
           },),
+
           SizedBox(height: 10.h,),
           LogoutWidget(),
 

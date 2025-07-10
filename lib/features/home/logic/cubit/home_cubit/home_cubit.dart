@@ -403,7 +403,9 @@ void search(String query) {
    if(purchaseProducts.isEmpty){
      emit(GetPurchaseHistoryFailure('No purchase history found'));
    }else{
-      emit(GetPurchaseHistorySuccess());
+     purchaseProducts.sort((a, b) =>
+         b.purchaseModel.createdAt!.compareTo(a.purchaseModel.createdAt!));
+     emit(GetPurchaseHistorySuccess());
    }
 
   }

@@ -6,6 +6,7 @@ import 'package:supra_cart/features/home/ui/main_home_view.dart';
 import 'package:supra_cart/features/home/ui/widgets/category_view.dart';
 import 'package:supra_cart/features/home/ui/widgets/search_view.dart';
 import 'package:supra_cart/features/product_details/ui/product_details_view.dart';
+import 'package:supra_cart/features/profile/ui/widgets/delivery_info_view.dart';
 import 'package:supra_cart/features/splash/ui/splash_view.dart';
 
 import '../../features/profile/ui/widgets/edit_name_view.dart';
@@ -36,7 +37,8 @@ Route<dynamic> onGenerateRoute(RouteSettings settings){
     case CategoryView.routeName:
       final categoryName = settings.arguments as String;
       return MaterialPageRoute(builder: (_) => CategoryView(categoryName: categoryName));
-
+    case DeliveryInfoView.routeName:
+      return MaterialPageRoute(builder: (_) =>  DeliveryInfoView());
 
     default:
       return MaterialPageRoute(builder: (_) => const Scaffold());

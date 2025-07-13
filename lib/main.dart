@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:supra_cart/bloc_observer.dart';
 import 'package:supra_cart/core/helper_function/get_it_services.dart';
+import 'package:supra_cart/core/repo/user_info_repo.dart';
 import 'package:supra_cart/core/secret_data.dart';
 import 'package:supra_cart/core/style/app_colors.dart';
 import 'package:supra_cart/features/auth/logic/cubit/authentication_cubit.dart';
@@ -20,7 +21,7 @@ Future<void> main() async {
     url: SecretData.supabaseUrl,
     anonKey: SecretData.supabaseAnonKey,
   );
-  Bloc.observer=blocObserver();
+  Bloc.observer = blocObserver();
   ServicesLoacator().init();
   runApp(const SupraCart());
 }
@@ -34,15 +35,31 @@ class SupraCart extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-      builder:(_,child){
-       return MultiBlocProvider(
-         providers: [
-           BlocProvider<AuthenticationCubit>(create: (context)=>
-           AuthenticationCubit(getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..getUserDataFromPrefs(),
-        ),
-           BlocProvider(create: (context) => HomeCubit(getIt.get<HomeProductRepo>(),getIt.get<SupabaseClient>(),getIt.get<SharedPreferences>())..init()..getHomeProducts(),)],
+      builder: (_, child) {
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<AuthenticationCubit>(
+              create:
+                  (context) => AuthenticationCubit(
+                    getIt.get<SupabaseClient>(),
+                    getIt.get<SharedPreferences>(),
+                  )..getUserDataFromPrefs(),
+            ),
+            BlocProvider(
+              create:
+                  (context) =>
+                      HomeCubit(
+                          getIt.get<HomeProductRepo>(),
+                          getIt.get<SupabaseClient>(),
+                          getIt.get<SharedPreferences>(),
+                          getIt.get<UserInfoRepo>(),
+                        )
+                        ..init()
+                        ..getHomeProducts(),
+            ),
+          ],
 
-         child: MaterialApp(
+          child: MaterialApp(
             title: 'Supra Market',
             theme: ThemeData(
               scaffoldBackgroundColor: AppColors.kScaffoldColor,
@@ -52,10 +69,8 @@ class SupraCart extends StatelessWidget {
             initialRoute: SplashView.routeName,
             debugShowCheckedModeBanner: false,
           ),
-       );
-      }
+        );
+      },
     );
   }
-
 }
-

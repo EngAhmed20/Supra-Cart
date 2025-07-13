@@ -316,5 +316,6 @@ Future<void>saveUserDataToPrefs(UserModel model)async{
     emit(AuthenticationUserDataNotFound(
         'No user data found in shared preferences.'));
   }
+  ///////////////////////////////////////////////
 }
 

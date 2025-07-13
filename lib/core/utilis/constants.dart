@@ -17,3 +17,4 @@ const List<String> orderStatusList = [
   'Confirm Receipt',
   'Archived',
 ];
+const deliveryInfoTable='delivery_info';

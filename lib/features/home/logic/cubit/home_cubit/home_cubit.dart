@@ -9,6 +9,7 @@ import 'package:meta/meta.dart';
 import 'package:pay_with_paymob/pay_with_paymob.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:supra_cart/core/models/delivery_info_model.dart';
 import 'package:supra_cart/core/models/product_model.dart';
 import 'package:supra_cart/core/repo/product_repo.dart';
 import 'package:supra_cart/core/secret_data.dart';
@@ -18,6 +19,7 @@ import 'package:supra_cart/features/profile/logic/purchase_product_model.dart';
 import '../../../../../core/models/comments_model.dart';
 import '../../../../../core/models/product_rate_model.dart';
 import '../../../../../core/models/purchase_model.dart';
+import '../../../../../core/repo/user_info_repo.dart';
 import '../../../../../core/utilis/constants.dart';
 import '../../../ui/widgets/search_view.dart';
 
@@ -25,8 +27,9 @@ part 'home_state.dart';
 enum OrderStatus {pending,processing, onTheWay,delivered}
 
 class HomeCubit extends Cubit<HomeState> {
-  HomeCubit(this.homeRepo, this.client,this.sharedPreferences) : super(HomeCubitInit());
+  HomeCubit(this.homeRepo, this.client,this.sharedPreferences,this.userInfoRepo) : super(HomeCubitInit());
   final HomeProductRepo homeRepo;
+  final UserInfoRepo userInfoRepo;
   SupabaseClient client;
   late TextEditingController feedBackController;
   late TextEditingController searchController;
@@ -446,8 +449,95 @@ void search(String query) {
       },
     );
   }
+  //////////////////////////////////////////////////////delivery info
+  Future<void>addDeliveryInfo({
+    required String phone,
+    required String governorate,
+    required String city,
+    String? additionalInfo,
+  })async{
+    emit(AddUserInfoLoading());
+    final response = await userInfoRepo.addUserInfo(
+      userId: client.auth.currentUser!.id,
+      phone: phone,
+      governorate: governorate,
+      city: city,
+      additionalInfo: additionalInfo,
+    );
+    response.fold(
+          (failure) => emit(AddUserInfoFailure(failure.message)),
+          (successResponse) async{
+        await getDeliveryInfo();
+        emit(AddUserInfoSuccess());
+      },
+    );
+  }
+  DeliveryInfoModel ?userInfoModel;
+  Future<void>getDeliveryInfo()async{
+    emit(GetUserInfoLoading());
+    final response = await userInfoRepo.getUserInfo(userId: client.auth.currentUser!.id);
+    response.fold(
+          (failure) => emit(GetUserInfoFailure(failure.message)),
+          (successResponse) {
+        userInfoModel=successResponse;
+        log('user info retrieved successfully');
+        emit(GetUserInfoSuccess());
+      },
+    );
+  }
+  Future<void>updateDeliveryInfo({
+    String? phone,
+    String? governorate,
+    String? city,
+    String? additionalInfo,
+  })async{
+    emit(UpdateUserInfoLoading());
+    final response = await userInfoRepo.updateUserInfo(
+      userId: client.auth.currentUser!.id,
+      phone: phone,
+      governorate: governorate,
+      city: city,
+      additionalInfo: additionalInfo,
+    );
+    response.fold(
+          (failure) => emit(UpdateUserInfoFailure(failure.message)),
+          (successResponse) async{
+           await getDeliveryInfo();
+        emit(UpdateUserInfoSuccess());
+      },
+    );
+  }
+  Future<void> saveOrUpdateDeliveryInfo({
+    required String phone,
+    required String governorate,
+    required String city,
+    String? additionalInfo,
+  }) async {
+    emit(AddUserInfoLoading());
 
-clear(){
+    final existingInfoResponse = await userInfoRepo.getUserInfo(
+      userId: client.auth.currentUser!.id,
+    );
+
+    if (existingInfoResponse.isRight()) {
+      await updateDeliveryInfo(
+        phone: phone,
+        governorate: governorate,
+        city: city,
+        additionalInfo: additionalInfo,
+      );
+    } else {
+      await addDeliveryInfo(
+        phone: phone,
+        governorate: governorate,
+        city: city,
+        additionalInfo: additionalInfo,
+      );
+    }
+  }
+
+
+  clear(){
   searchController.clear();
   categoryName=null;
   emit(Closed());

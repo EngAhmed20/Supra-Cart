@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 import 'package:supra_cart/features/profile/ui/widgets/custom_profile_button.dart';
+import 'package:supra_cart/features/profile/ui/widgets/delivery_info_view.dart';
 import 'package:supra_cart/features/profile/ui/widgets/logout_widget.dart';
 import 'package:supra_cart/features/profile/ui/widgets/my_orders_view.dart';
 import 'package:supra_cart/features/profile/ui/widgets/user_profile_info.dart';
@@ -18,10 +19,10 @@ class ProfileView extends StatelessWidget {
         children: [
           UserProfileInfo(),
           SizedBox(height: 10.h),
-          CustomProfileButton(title: 'Delivery Info',icon: Icons.shopping_cart,onTap: (){
-            context.read<HomeCubit>().getPurchaseProducts();
+          CustomProfileButton(title: 'Delivery Info',icon: Icons.maps_home_work,onTap: (){
+            context.read<HomeCubit>().getDeliveryInfo();
 
-            Navigator.pushNamed(context, MyOrdersView.routeName);
+            Navigator.pushNamed(context,DeliveryInfoView.routeName);
           },),
           SizedBox(height: 10.h),
           CustomProfileButton(title: 'My Orders',icon: Icons.shopping_cart,onTap: (){

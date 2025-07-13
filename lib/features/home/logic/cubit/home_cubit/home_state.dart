@@ -129,3 +129,26 @@ class ArchivePurchaseFailure extends HomeState {
 
   ArchivePurchaseFailure(this.errorMessage);
 }
+class AddUserInfoLoading extends HomeState {}
+class AddUserInfoSuccess extends HomeState {}
+class AddUserInfoFailure extends HomeState {
+  final String errorMessage;
+
+  AddUserInfoFailure(this.errorMessage);
+}
+class GetUserInfoLoading extends HomeState {}
+class GetUserInfoSuccess extends HomeState {
+
+}
+class GetUserInfoFailure extends HomeState {
+  final String errorMessage;
+
+  GetUserInfoFailure(this.errorMessage);
+}
+class UpdateUserInfoLoading extends HomeState {}
+class UpdateUserInfoSuccess extends HomeState {}
+class UpdateUserInfoFailure extends HomeState {
+  final String errorMessage;
+
+  UpdateUserInfoFailure(this.errorMessage);
+}

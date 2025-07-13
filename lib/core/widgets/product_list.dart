@@ -10,6 +10,7 @@ import 'package:supra_cart/core/widgets/product_card.dart';
 import 'package:supra_cart/features/home/logic/cubit/home_cubit/home_cubit.dart';
 import '../../features/home/ui/main_home_view.dart';
 import '../../features/product_details/ui/product_details_view.dart';
+import '../../features/profile/ui/widgets/delivery_info_view.dart';
 import '../helper_function/dummy_product_list.dart';
 import '../style/app_colors.dart';
 import 'custom_snack_bar.dart';
@@ -74,23 +75,33 @@ class ProductList extends StatelessWidget {
               (context, index) => ProductCard(
                 productModel: productToDisplay[index],
                 buyNowButton: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => PaymentView(
-                        onPaymentSuccess: () async{
-                          await cubit.purchaseProduct(productId: productToDisplay[index].id);
-                          cubit.changeIndex(0);
+                  if(cubit.userInfoModel==null){
+                    customSnackBar(
+                      context: context,
+                      msg: 'Please add your delivery information first.',
+                      isError: true,
+                    );
+                    Navigator.pushNamed(context, DeliveryInfoView.routeName);
+                  }else{
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PaymentView(
+                          onPaymentSuccess: () async{
+                            await cubit.purchaseProduct(productId: productToDisplay[index].id);
+                            cubit.changeIndex(0);
 
-                        },
-                        onPaymentError: () {
-                          log("payment error");
-                          // Handle payment failure
-                        },
-                        price: productToDisplay[index].price.toDouble(),
+                          },
+                          onPaymentError: () {
+                            log("payment error");
+                            // Handle payment failure
+                          },
+                          price: productToDisplay[index].price.toDouble(),
+                        ),
                       ),
-                    ),
-                  );
+                    );
+
+                  }
                 },
                 isFav: cubit.checkIsFav(productId: productToDisplay[index].id),
                 favButton: () {

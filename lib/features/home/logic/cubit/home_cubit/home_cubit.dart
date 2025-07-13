@@ -50,6 +50,7 @@ class HomeCubit extends Cubit<HomeState> {
     searchController = TextEditingController();
     await getUserDataFromPrefs();
     initPaymobIntegration();
+    await getDeliveryInfo();
     emit(HomeCubitInit());
   }
   UserModel userSavedDataModel= UserModel(

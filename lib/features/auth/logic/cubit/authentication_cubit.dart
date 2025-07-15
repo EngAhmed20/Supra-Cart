@@ -32,6 +32,7 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
   late GlobalKey<FormState>resetPassFormKey;
   late TextEditingController resetPassEmailController;
   final SharedPreferences sharedPreferences;
+  bool isTermsAccept = false;
 
   init() {
     hidePass = true;
@@ -185,16 +186,48 @@ class AuthenticationCubit extends Cubit<AuthenticationState> {
       emit(AuthenticationRegisterFailure(e.toString()));
     }
   }
+// change terms
+  void changeTermsAccept(bool value) {
+    isTermsAccept = value;
+    emit(AuthenticationTermsChanged());
+  }
 
+  /// register
+  // validate email
+  String? validateEmail(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Email is required';
+    }
+    final emailRegex = RegExp(r'^[^@]+@[^@]+\.[^@]+$');
+    if (!emailRegex.hasMatch(value)) {
+      return 'Invalid email format';
+    }
+    return null;
+  }
+
+  // validate password
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+    if (value.length < 6) {
+      return 'Password must be at least 6 characters long';
+    }
+    return null;
+  }
 // register button pressed
   void registerButtonPressed() {
     if (registerFormKey.currentState!.validate()) {
-      registerUser(
-        name: registerNameController.text.trim(),
-        email: registerEmailController.text.trim(),
-        password: registerPasswordController.text.trim(),
-      );
-      signUpAutovalidateMode = AutovalidateMode.disabled;
+     if(isTermsAccept){
+       registerUser(
+         name: registerNameController.text.trim(),
+         email: registerEmailController.text.trim(),
+         password: registerPasswordController.text.trim(),
+       );
+       signUpAutovalidateMode = AutovalidateMode.disabled;
+     }else{
+       emit(AutneticationTermsNotAccepted());
+     }
     } else {
       signUpAutovalidateMode = AutovalidateMode.always;
       emit(AuthenticationRegisterValidationError());

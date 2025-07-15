@@ -18,3 +18,4 @@ const List<String> orderStatusList = [
   'Archived',
 ];
 const deliveryInfoTable='delivery_info';
+const String termsUrl = "https://www.termsfeed.com/live/43bf675d-7b68-454a-bf45-7ec1db0cf6a4";

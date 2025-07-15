@@ -1,4 +1,4 @@
-package com.example.supra_cart
+package com.supra_cart.eg
 
 import io.flutter.embedding.android.FlutterActivity
 

@@ -75,3 +75,7 @@ class AuthenticationUserDataNotFound extends AuthenticationState {
 
   AuthenticationUserDataNotFound(this.errorMessage);
 }
+class AuthenticationTermsChanged extends AuthenticationState {}
+class AutneticationTermsNotAccepted extends AuthenticationState {
+
+}

@@ -4,6 +4,7 @@ class Assets {
 
   static const String assetsImagesNoOrdersYet = 'assets/images/no_orders_yet.png';
   static const String imagesBuy = 'assets/images/buy.jpg';
+  static const String imagesCheck = 'assets/images/Check.svg';
   static const String imagesNoOrdersYet = 'assets/images/no_orders_yet.png';
   static const String imagesSupraLogo = 'assets/images/supra_logo.png';
 

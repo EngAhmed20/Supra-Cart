@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supra_cart/core/helper_function/validators.dart';
 import 'package:supra_cart/features/auth/logic/cubit/authentication_cubit.dart';
+import 'package:supra_cart/features/auth/ui/widgets/terms_conditions_widget.dart';
 
 import '../../../../core/style/app_colors.dart';
 import '../../../../core/style/app_text_styles.dart';
@@ -35,7 +37,7 @@ class SignupViewBody extends StatelessWidget {
                     style: textStyle.Bold24,
 
                   ),
-                  SizedBox(height: MediaQuery.of(context).size.height*.09,),
+                  SizedBox(height: MediaQuery.of(context).size.height*.03,),
                   Card(
                     margin: EdgeInsets.zero,
                     color: AppColors.kWhiteColor,
@@ -88,8 +90,10 @@ class SignupViewBody extends StatelessWidget {
                             return FormValidators.validateConfirmPassword(value, cubit.registerPasswordController.text);
                             },
                           ),
-
-
+                           SizedBox(height: 10.h),
+                          TermsAndConditionWidget(onChecked: (value) {
+                            cubit.changeTermsAccept(value);
+                          },),
                           const SizedBox(height: 30,),
                           LoginButton(loginText: 'Sign Up',onTap: ()async {
                             cubit.registerButtonPressed();
@@ -148,6 +152,9 @@ class SignupViewBody extends StatelessWidget {
             } else if (state is AuthenticationGoogleSignInFailure) {
               customSnackBar(context: context, msg: state.errorMessage);
             }
+          if (state is AutneticationTermsNotAccepted) {
+            customSnackBar(context: context, msg: 'Please accept the terms and conditions to proceed.',isError: true);
+          }
 
 
     });

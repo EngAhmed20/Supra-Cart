@@ -29,7 +29,6 @@ Future<void> main() async {
 class SupraCart extends StatelessWidget {
   const SupraCart({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
